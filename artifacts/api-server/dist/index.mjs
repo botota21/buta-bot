@@ -107939,29 +107939,29 @@ function getAutoReplies(guildId) {
   return store.get(guildId) ?? [];
 }
 function addAutoReply(guildId, reply) {
-  const replies = store.get(guildId) ?? [];
-  const exists = replies.some(
+  const replies2 = store.get(guildId) ?? [];
+  const exists = replies2.some(
     (r) => r.trigger.toLowerCase() === reply.trigger.toLowerCase()
   );
   if (exists) return false;
-  replies.push(reply);
-  store.set(guildId, replies);
+  replies2.push(reply);
+  store.set(guildId, replies2);
   return true;
 }
 function removeAutoReply(guildId, trigger) {
-  const replies = store.get(guildId) ?? [];
-  const index = replies.findIndex(
+  const replies2 = store.get(guildId) ?? [];
+  const index = replies2.findIndex(
     (r) => r.trigger.toLowerCase() === trigger.toLowerCase()
   );
   if (index === -1) return false;
-  replies.splice(index, 1);
-  store.set(guildId, replies);
+  replies2.splice(index, 1);
+  store.set(guildId, replies2);
   return true;
 }
 function findAutoReply(guildId, message) {
-  const replies = store.get(guildId) ?? [];
+  const replies2 = store.get(guildId) ?? [];
   const lower = message.toLowerCase();
-  for (const reply of replies) {
+  for (const reply of replies2) {
     if (reply.exact) {
       if (lower === reply.trigger.toLowerCase()) return reply;
     } else {
@@ -108038,13 +108038,13 @@ var autoreply = {
         ]
       });
     } else if (sub === "list") {
-      const replies = getAutoReplies(guildId);
+      const replies2 = getAutoReplies(guildId);
       const embed = new import_discord18.EmbedBuilder().setColor(3447003).setTitle("\u{1F4CB} \u0627\u0644\u0631\u062F\u0648\u062F \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A\u0629").setTimestamp();
-      if (replies.length === 0) {
+      if (replies2.length === 0) {
         embed.setDescription("\u0644\u0627 \u062A\u0648\u062C\u062F \u0631\u062F\u0648\u062F \u062A\u0644\u0642\u0627\u0626\u064A\u0629 \u062D\u062A\u0649 \u0627\u0644\u0622\u0646.\n\u0627\u0633\u062A\u062E\u062F\u0645 `/autoreply add` \u0644\u0625\u0636\u0627\u0641\u0629 \u0648\u0627\u062D\u062F.");
       } else {
-        embed.setDescription(`\u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u0631\u062F\u0648\u062F: **${replies.length}**`);
-        replies.slice(0, 25).forEach((r, i) => {
+        embed.setDescription(`\u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u0631\u062F\u0648\u062F: **${replies2.length}**`);
+        replies2.slice(0, 25).forEach((r, i) => {
           embed.addFields({
             name: `${i + 1}. \`${r.trigger}\` ${r.exact ? "\u{1F3AF}" : "\u{1F50D}"}`,
             value: r.response.length > 80 ? r.response.slice(0, 80) + "..." : r.response
@@ -108104,14 +108104,37 @@ function registerInteractionEvent(client) {
 
 // src/bot/events/messageCreate.ts
 var import_discord21 = __toESM(require_src2(), 1);
+var replies = [
+  "\u0639\u064A\u0648\u0646\u064A \u{1F451}",
+  "\u0644\u0628\u064A\u0647 \u064A\u0627 \u0637\u0648\u064A\u0644 \u0627\u0644\u0639\u0645\u0631 \u{1F90D}",
+  "\u0647\u0644\u0627 \u0648\u063A\u0644\u0627 \u064A\u0627 \u0628\u0627\u0634\u0627 \u2728",
+  "\u062A\u0641\u0636\u0644 \u0623\u0645\u0631\u0646\u064A \u{1F440}",
+  "\u0627\u0633\u0645\u0639\u0643 \u0642\u0648\u0644 \u{1F3A7}",
+  "\u0623\u0628\u0634\u0631 \u062D\u0627\u0636\u0631 \u26A1"
+];
+var animatedEmoji = "<a:pepe_dance:123456789>";
 function registerMessageEvent(client) {
   client.on(import_discord21.Events.MessageCreate, async (message) => {
     if (message.author.bot) return;
     if (!message.guildId) return;
-    const reply = findAutoReply(message.guildId, message.content);
-    if (!reply) return;
+    const content = message.content.toLowerCase();
+    const isMentioned = client.user ? message.mentions.has(client.user) : false;
+    const hasBoti = content.includes("\u0628\u0648\u062A\u064A");
+    const hasBotiBasha = content.includes("\u0628\u0648\u062A\u064A \u0628\u0627\u0634\u0627");
+    const hasBushi = content.includes("\u0628\u0648\u0634\u064A");
+    if (isMentioned || hasBoti || hasBotiBasha || hasBushi) {
+      const reply = replies[Math.floor(Math.random() * replies.length)];
+      try {
+        await message.reply(`${animatedEmoji} ${reply}`);
+      } catch (err) {
+        logger.error({ err }, "\u0641\u0634\u0644 \u0625\u0631\u0633\u0627\u0644 \u0631\u062F \u0627\u0644\u0645\u0646\u0627\u062F\u0627\u0629");
+      }
+      return;
+    }
+    const autoReply = findAutoReply(message.guildId, message.content);
+    if (!autoReply) return;
     try {
-      await message.reply(reply.response);
+      await message.reply(autoReply.response);
     } catch (err) {
       logger.error({ err }, "\u0641\u0634\u0644 \u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0631\u062F \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A");
     }
