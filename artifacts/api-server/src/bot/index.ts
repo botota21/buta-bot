@@ -24,6 +24,7 @@ import { autoreply } from "./commands/fun/autoreply.js";
 import { games } from "./commands/fun/games.js";
 import { points } from "./commands/fun/points.js";
 import { shop } from "./commands/fun/shop.js";
+import { leaderboard } from "./commands/fun/leaderboard.js";
 
 import { registerReadyEvent } from "./events/ready.js";
 import { registerInteractionEvent } from "./events/interactionCreate.js";
@@ -33,7 +34,7 @@ import { registerGuildCreateEvent } from "./events/guildCreate.js";
 const ALL_COMMANDS: Command[] = [
   kick, ban, unban, mute, unmute, clear, warn, warningsList,
   ping, joke, roll, flip, eightball, userinfo, serverinfo, avatar, help, autoreply,
-  games, points, shop,
+  games, points, shop, leaderboard,
 ];
 
 export function startBot() {

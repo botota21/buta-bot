@@ -71045,7 +71045,7 @@ var require_dist9 = __commonJS({
       ContextMenuCommandAssertions: () => Assertions_exports11,
       ContextMenuCommandBuilder: () => ContextMenuCommandBuilder,
       EmbedAssertions: () => Assertions_exports,
-      EmbedBuilder: () => EmbedBuilder21,
+      EmbedBuilder: () => EmbedBuilder22,
       FileBuilder: () => FileBuilder,
       FileUploadAssertions: () => Assertions_exports4,
       FileUploadBuilder: () => FileUploadBuilder,
@@ -71071,7 +71071,7 @@ var require_dist9 = __commonJS({
       SlashCommandAssertions: () => Assertions_exports10,
       SlashCommandAttachmentOption: () => SlashCommandAttachmentOption,
       SlashCommandBooleanOption: () => SlashCommandBooleanOption,
-      SlashCommandBuilder: () => SlashCommandBuilder22,
+      SlashCommandBuilder: () => SlashCommandBuilder23,
       SlashCommandChannelOption: () => SlashCommandChannelOption,
       SlashCommandIntegerOption: () => SlashCommandIntegerOption,
       SlashCommandMentionableOption: () => SlashCommandMentionableOption,
@@ -71174,7 +71174,7 @@ var require_dist9 = __commonJS({
       return arr;
     }
     __name(normalizeArray, "normalizeArray");
-    var EmbedBuilder21 = class {
+    var EmbedBuilder22 = class {
       static {
         __name(this, "EmbedBuilder");
       }
@@ -75287,7 +75287,7 @@ var require_dist9 = __commonJS({
         return this;
       }
     };
-    var SlashCommandBuilder22 = class {
+    var SlashCommandBuilder23 = class {
       /**
        * The name of this command.
        */
@@ -75340,10 +75340,10 @@ var require_dist9 = __commonJS({
        */
       nsfw = void 0;
     };
-    __name(SlashCommandBuilder22, "SlashCommandBuilder");
-    SlashCommandBuilder22 = __decorateClass([
+    __name(SlashCommandBuilder23, "SlashCommandBuilder");
+    SlashCommandBuilder23 = __decorateClass([
       (0, import_ts_mixer6.mix)(SharedSlashCommandOptions, SharedNameAndDescription, SharedSlashCommandSubcommands, SharedSlashCommand)
-    ], SlashCommandBuilder22);
+    ], SlashCommandBuilder23);
     var Assertions_exports11 = {};
     __export2(Assertions_exports11, {
       contextsPredicate: () => contextsPredicate2,
@@ -86833,7 +86833,7 @@ var require_ChatInputCommandInteraction = __commonJS({
     var CommandInteraction = require_CommandInteraction();
     var CommandInteractionOptionResolver = require_CommandInteractionOptionResolver();
     var { transformResolved } = require_Util();
-    var ChatInputCommandInteraction23 = class extends CommandInteraction {
+    var ChatInputCommandInteraction24 = class extends CommandInteraction {
       constructor(client, data) {
         super(client, data);
         this.options = new CommandInteractionOptionResolver(
@@ -86857,7 +86857,7 @@ var require_ChatInputCommandInteraction = __commonJS({
         return `/${properties.filter(Boolean).join(" ")}`;
       }
     };
-    module2.exports = ChatInputCommandInteraction23;
+    module2.exports = ChatInputCommandInteraction24;
   }
 });
 
@@ -87455,7 +87455,7 @@ var require_InteractionCreate = __commonJS({
     var AutocompleteInteraction = require_AutocompleteInteraction();
     var ButtonInteraction = require_ButtonInteraction();
     var ChannelSelectMenuInteraction = require_ChannelSelectMenuInteraction();
-    var ChatInputCommandInteraction23 = require_ChatInputCommandInteraction();
+    var ChatInputCommandInteraction24 = require_ChatInputCommandInteraction();
     var MentionableSelectMenuInteraction = require_MentionableSelectMenuInteraction();
     var MessageContextMenuCommandInteraction = require_MessageContextMenuCommandInteraction();
     var ModalSubmitInteraction = require_ModalSubmitInteraction();
@@ -87474,7 +87474,7 @@ var require_InteractionCreate = __commonJS({
           case InteractionType.ApplicationCommand:
             switch (data.data.type) {
               case ApplicationCommandType.ChatInput:
-                InteractionClass = ChatInputCommandInteraction23;
+                InteractionClass = ChatInputCommandInteraction24;
                 break;
               case ApplicationCommandType.User:
                 InteractionClass = UserContextMenuCommandInteraction;
@@ -102952,7 +102952,7 @@ var require_EmbedBuilder = __commonJS({
     var { isJSONEncodable } = require_dist2();
     var { toSnakeCase: toSnakeCase2 } = require_Transformers();
     var { resolveColor } = require_Util();
-    var EmbedBuilder21 = class extends BuildersEmbed {
+    var EmbedBuilder22 = class extends BuildersEmbed {
       constructor(data) {
         super(toSnakeCase2(data));
       }
@@ -102981,7 +102981,7 @@ var require_EmbedBuilder = __commonJS({
         return embedLength(this.data);
       }
     };
-    module2.exports = EmbedBuilder21;
+    module2.exports = EmbedBuilder22;
   }
 });
 
@@ -112532,7 +112532,7 @@ app.use("/api", routes_default);
 var app_default = app;
 
 // src/bot/index.ts
-var import_discord27 = __toESM(require_src2(), 1);
+var import_discord28 = __toESM(require_src2(), 1);
 
 // src/bot/commands/moderation/kick.ts
 var import_discord2 = __toESM(require_src2(), 1);
@@ -131894,8 +131894,46 @@ var shop = {
   }
 };
 
-// src/bot/events/ready.ts
+// src/bot/commands/fun/leaderboard.ts
 var import_discord23 = __toESM(require_src2(), 1);
+var MEDALS = ["\u{1F947}", "\u{1F948}", "\u{1F949}"];
+var leaderboard = {
+  data: new import_discord23.SlashCommandBuilder().setName("leaderboard").setDescription("\u0639\u0631\u0636 \u0623\u0641\u0636\u0644 \u0627\u0644\u0644\u0627\u0639\u0628\u064A\u0646 \u0641\u064A \u0627\u0644\u0633\u064A\u0631\u0641\u0631").addStringOption(
+    (o) => o.setName("\u0627\u0644\u0646\u0648\u0639").setDescription("\u0631\u062A\u0628 \u062D\u0633\u0628 \u0627\u0644\u0646\u0642\u0627\u0637 \u0623\u0648 \u0627\u0644\u0639\u0645\u0644\u0627\u062A").addChoices(
+      { name: "\u0627\u0644\u0646\u0642\u0627\u0637 \u{1F3C6}", value: "points" },
+      { name: "\u0627\u0644\u0639\u0645\u0644\u0627\u062A \u{1FA99}", value: "coins" }
+    )
+  ),
+  async execute(interaction) {
+    await interaction.deferReply();
+    const guildId = interaction.guildId;
+    if (!guildId) {
+      await interaction.editReply({ content: "\u274C \u0644\u0627 \u064A\u0645\u0643\u0646 \u0627\u0633\u062A\u062E\u062F\u0627\u0645 \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u062E\u0627\u0631\u062C \u0627\u0644\u0633\u064A\u0631\u0641\u0631." });
+      return;
+    }
+    const sortBy = interaction.options.getString("\u0627\u0644\u0646\u0648\u0639") ?? "points";
+    const column = sortBy === "coins" ? botUserProfilesTable.coins : botUserProfilesTable.points;
+    const rows = await db.select().from(botUserProfilesTable).where(and(eq(botUserProfilesTable.guildId, guildId), gt(column, 0))).orderBy(desc(column)).limit(10);
+    if (rows.length === 0) {
+      await interaction.editReply({ content: "\u{1F4ED} \u0644\u0627 \u064A\u0648\u062C\u062F \u0644\u0627\u0639\u0628\u064A\u0646 \u0628\u0639\u062F. \u062C\u0631\u0651\u0628 /games \u0639\u0634\u0627\u0646 \u062A\u0628\u062F\u0623!" });
+      return;
+    }
+    const lines = await Promise.all(
+      rows.map(async (row, index) => {
+        const rank = MEDALS[index] ?? `#${index + 1}`;
+        const member = await interaction.guild?.members.fetch(row.userId).catch(() => null);
+        const displayName = row.name ?? member?.displayName ?? member?.user.username ?? `<@${row.userId}>`;
+        const value = sortBy === "coins" ? `${row.coins} \u{1FA99}` : `${row.points} \u{1F3C6}`;
+        return `${rank} **${displayName}** \u2014 ${value}`;
+      })
+    );
+    const embed = new import_discord23.EmbedBuilder().setColor(15844367).setTitle(sortBy === "coins" ? "\u{1FA99} \u0623\u0641\u0636\u0644 \u0627\u0644\u0644\u0627\u0639\u0628\u064A\u0646 \u0628\u0627\u0644\u0639\u0645\u0644\u0627\u062A" : "\u{1F3C6} \u0623\u0641\u0636\u0644 \u0627\u0644\u0644\u0627\u0639\u0628\u064A\u0646 \u0628\u0627\u0644\u0646\u0642\u0627\u0637").setDescription(lines.join("\n")).setTimestamp();
+    await interaction.editReply({ embeds: [embed] });
+  }
+};
+
+// src/bot/events/ready.ts
+var import_discord24 = __toESM(require_src2(), 1);
 
 // src/bot/store/allowedGuilds.ts
 async function isGuildAllowed(guildId) {
@@ -131917,13 +131955,13 @@ async function approveGuild(guildId, guildName, ownerId) {
 
 // src/bot/events/ready.ts
 function registerReadyEvent(client) {
-  client.once(import_discord23.Events.ClientReady, async (readyClient) => {
+  client.once(import_discord24.Events.ClientReady, async (readyClient) => {
     logger.info(`\u0627\u0644\u0631\u0628\u0627\u062A \u062C\u0627\u0647\u0632! \u062A\u0645 \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644 \u0628\u0640 ${readyClient.user.tag}`);
     readyClient.user.setPresence({
       activities: [
         {
           name: "\u0628\u0648\u062A\u0647 | /help",
-          type: import_discord23.ActivityType.Watching
+          type: import_discord24.ActivityType.Watching
         }
       ],
       status: "online"
@@ -131939,7 +131977,7 @@ function registerReadyEvent(client) {
 }
 
 // src/bot/events/interactionCreate.ts
-var import_discord24 = __toESM(require_src2(), 1);
+var import_discord25 = __toESM(require_src2(), 1);
 
 // src/bot/games/lastLetter.ts
 var activeGames = /* @__PURE__ */ new Map();
@@ -131985,7 +132023,7 @@ async function handleGameMessage(message) {
 
 // src/bot/events/interactionCreate.ts
 function registerInteractionEvent(client) {
-  client.on(import_discord24.Events.InteractionCreate, async (interaction) => {
+  client.on(import_discord25.Events.InteractionCreate, async (interaction) => {
     if (interaction.isStringSelectMenu() && interaction.customId === "games") {
       const value = interaction.values[0];
       try {
@@ -132039,7 +132077,7 @@ function registerInteractionEvent(client) {
 }
 
 // src/bot/events/messageCreate.ts
-var import_discord25 = __toESM(require_src2(), 1);
+var import_discord26 = __toESM(require_src2(), 1);
 var ownerName = "\u0631\u0648\u0632";
 var ownerReplies = [
   ownerName,
@@ -132124,7 +132162,7 @@ function extractName(raw) {
   return name;
 }
 function registerMessageEvent(client) {
-  client.on(import_discord25.Events.MessageCreate, async (message) => {
+  client.on(import_discord26.Events.MessageCreate, async (message) => {
     if (message.author.bot) return;
     if (!message.guildId) return;
     const guildId = message.guildId;
@@ -132194,10 +132232,10 @@ function registerMessageEvent(client) {
 }
 
 // src/bot/events/guildCreate.ts
-var import_discord26 = __toESM(require_src2(), 1);
+var import_discord27 = __toESM(require_src2(), 1);
 var OWNER_ID = process.env["OWNER_ID"];
 function registerGuildCreateEvent(client) {
-  client.on(import_discord26.Events.GuildCreate, async (guild) => {
+  client.on(import_discord27.Events.GuildCreate, async (guild) => {
     try {
       const alreadyAllowed = await isGuildAllowed(guild.id);
       if (alreadyAllowed) return;
@@ -132249,7 +132287,8 @@ var ALL_COMMANDS = [
   autoreply,
   games,
   points,
-  shop
+  shop,
+  leaderboard
 ];
 function startBot() {
   const token = process.env["DISCORD_TOKEN"];
@@ -132257,16 +132296,16 @@ function startBot() {
     logger.warn("DISCORD_TOKEN \u063A\u064A\u0631 \u0645\u0648\u062C\u0648\u062F \u2014 \u0627\u0644\u0631\u0628\u0627\u062A \u0644\u0646 \u064A\u0639\u0645\u0644. \u0623\u0636\u0641 \u0627\u0644\u062A\u0648\u0643\u0646 \u0644\u062A\u0641\u0639\u064A\u0644 \u0627\u0644\u0631\u0628\u0627\u062A.");
     return;
   }
-  const client = new import_discord27.Client({
+  const client = new import_discord28.Client({
     intents: [
-      import_discord27.GatewayIntentBits.Guilds,
-      import_discord27.GatewayIntentBits.GuildModeration,
-      import_discord27.GatewayIntentBits.GuildMessages,
-      import_discord27.GatewayIntentBits.MessageContent
+      import_discord28.GatewayIntentBits.Guilds,
+      import_discord28.GatewayIntentBits.GuildModeration,
+      import_discord28.GatewayIntentBits.GuildMessages,
+      import_discord28.GatewayIntentBits.MessageContent
     ],
-    partials: [import_discord27.Partials.Message, import_discord27.Partials.Channel]
+    partials: [import_discord28.Partials.Message, import_discord28.Partials.Channel]
   });
-  client.commands = new import_discord27.Collection();
+  client.commands = new import_discord28.Collection();
   for (const command of ALL_COMMANDS) {
     client.commands.set(command.data.name, command);
   }
@@ -132281,7 +132320,7 @@ function startBot() {
 }
 
 // src/bot/deploy-commands.ts
-var import_discord28 = __toESM(require_src2(), 1);
+var import_discord29 = __toESM(require_src2(), 1);
 async function deployCommands() {
   const token = process.env["DISCORD_TOKEN"];
   const clientId = process.env["DISCORD_CLIENT_ID"];
@@ -132291,11 +132330,11 @@ async function deployCommands() {
     );
     return;
   }
-  const rest = new import_discord28.REST().setToken(token);
+  const rest = new import_discord29.REST().setToken(token);
   const commandsData = ALL_COMMANDS.map((cmd) => cmd.data.toJSON());
   try {
     logger.info(`\u062C\u0627\u0631\u064A \u062A\u0633\u062C\u064A\u0644 ${commandsData.length} \u0623\u0645\u0631...`);
-    await rest.put(import_discord28.Routes.applicationCommands(clientId), { body: commandsData });
+    await rest.put(import_discord29.Routes.applicationCommands(clientId), { body: commandsData });
     logger.info("\u062A\u0645 \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u0623\u0648\u0627\u0645\u0631 \u0628\u0646\u062C\u0627\u062D!");
   } catch (err) {
     logger.error({ err }, "\u0641\u0634\u0644 \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u0623\u0648\u0627\u0645\u0631");
