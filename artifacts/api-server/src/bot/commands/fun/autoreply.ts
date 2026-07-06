@@ -6,6 +6,7 @@ import {
 } from "discord.js";
 import type { Command } from "../../types.js";
 import { addAutoReply, removeAutoReply, getAutoReplies } from "../../autoReplyStore.js";
+import { requireOwner } from "../../permissions.js";
 
 export const autoreply: Command = {
   data: new SlashCommandBuilder()
@@ -39,13 +40,7 @@ export const autoreply: Command = {
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
   async execute(interaction: ChatInputCommandInteraction) {
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.reply({
-        content: "❌ هذا الأمر متاح لمالك السيرفر فقط.",
-        ephemeral: true,
-      });
-      return;
-    }
+    if (!(await requireOwner(interaction))) return;
 
     const sub = interaction.options.getSubcommand();
     const guildId = interaction.guildId!;

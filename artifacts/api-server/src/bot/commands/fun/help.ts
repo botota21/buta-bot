@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import type { Command } from "../../types.js";
+import { requireOwnerOrAdmin } from "../../permissions.js";
 
 export const help: Command = {
   data: new SlashCommandBuilder()
@@ -7,10 +8,7 @@ export const help: Command = {
     .setDescription("عرض قائمة الأوامر"),
 
   async execute(interaction: ChatInputCommandInteraction) {
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.reply({ content: "❌ هذا الأمر متاح لمالك السيرفر فقط.", ephemeral: true });
-      return;
-    }
+    if (!(await requireOwnerOrAdmin(interaction))) return;
     const embed = new EmbedBuilder()
       .setColor(0x5865f2)
       .setTitle("📋 قائمة أوامر بوته")

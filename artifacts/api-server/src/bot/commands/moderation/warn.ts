@@ -5,6 +5,7 @@ import {
   EmbedBuilder,
 } from "discord.js";
 import type { Command } from "../../types.js";
+import { isOwnerOrAdmin } from "../../permissions.js";
 
 const warnings = new Map<string, { reason: string; moderator: string; timestamp: Date }[]>();
 
@@ -26,8 +27,8 @@ export const warn: Command = {
 
   async execute(interaction: ChatInputCommandInteraction) {
     await interaction.deferReply();
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.editReply({ content: "❌ هذا الأمر متاح لمالك السيرفر فقط." });
+    if (!isOwnerOrAdmin(interaction)) {
+      await interaction.editReply({ content: "❌ هذا الأمر متاح للمالك أو الأدمن فقط." });
       return;
     }
     const target = interaction.options.getUser("العضو", true);

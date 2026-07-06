@@ -26,15 +26,23 @@ async function api(method, endpoint, body) {
 }
 
 const IGNORE = [
-  '/node_modules/', '/dist/', '/.git/', '/.local/', '/.cache/',
+  '/node_modules/', '/.git/', '/.local/', '/.cache/',
   '/.upm/', '/.config/', '/.agents/', '/mockup-sandbox/',
   '.tsbuildinfo', '/pnpm-lock.yaml', '/.replit-artifact/'
 ];
+
+// Only keep the prebuilt bundle from dist/ (Render runs this directly);
+// skip source maps and everything else under dist/.
+function isAllowedDistFile(full) {
+  if (!full.includes('/dist/')) return true;
+  return full.endsWith('/dist/index.mjs');
+}
 
 function collectFiles(dir, files = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (IGNORE.some(p => full.includes(p))) continue;
+    if (!isAllowedDistFile(full)) continue;
     if (entry.isDirectory()) collectFiles(full, files);
     else files.push({ full, rel: full.replace(BASE + '/', '') });
   }

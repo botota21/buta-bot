@@ -60172,7 +60172,7 @@ var require_CachedManager = __commonJS({
 var require_PermissionsBitField = __commonJS({
   "../../node_modules/.pnpm/discord.js@14.26.4/node_modules/discord.js/src/util/PermissionsBitField.js"(exports2, module2) {
     "use strict";
-    var { PermissionFlagsBits: PermissionFlagsBits10 } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits11 } = require_v106();
     var BitField = require_BitField();
     var PermissionsBitField2 = class extends BitField {
       /**
@@ -60181,13 +60181,13 @@ var require_PermissionsBitField = __commonJS({
        * @memberof PermissionsBitField
        * @see {@link https://discord.com/developers/docs/topics/permissions#permissions-bitwise-permission-flags}
        */
-      static Flags = PermissionFlagsBits10;
+      static Flags = PermissionFlagsBits11;
       /**
        * Bitfield representing every permission combined
        * @type {bigint}
        * @memberof PermissionsBitField
        */
-      static All = Object.values(PermissionFlagsBits10).reduce((all, p) => all | p, 0n);
+      static All = Object.values(PermissionFlagsBits11).reduce((all, p) => all | p, 0n);
       /**
        * Bitfield representing the default permissions for users
        * @type {bigint}
@@ -60199,7 +60199,7 @@ var require_PermissionsBitField = __commonJS({
        * @type {bigint}
        * @memberof PermissionsBitField
        */
-      static StageModerator = PermissionFlagsBits10.ManageChannels | PermissionFlagsBits10.MuteMembers | PermissionFlagsBits10.MoveMembers;
+      static StageModerator = PermissionFlagsBits11.ManageChannels | PermissionFlagsBits11.MuteMembers | PermissionFlagsBits11.MoveMembers;
       /**
        * @type {bigint}
        * @memberof PermissionsBitField
@@ -60226,7 +60226,7 @@ var require_PermissionsBitField = __commonJS({
        * @returns {string[]}
        */
       missing(bits, checkAdmin = true) {
-        return checkAdmin && this.has(PermissionFlagsBits10.Administrator) ? [] : super.missing(bits);
+        return checkAdmin && this.has(PermissionFlagsBits11.Administrator) ? [] : super.missing(bits);
       }
       /**
        * Checks whether the bitfield has a permission, or any of multiple permissions.
@@ -60235,7 +60235,7 @@ var require_PermissionsBitField = __commonJS({
        * @returns {boolean}
        */
       any(permission, checkAdmin = true) {
-        return checkAdmin && super.has(PermissionFlagsBits10.Administrator) || super.any(permission);
+        return checkAdmin && super.has(PermissionFlagsBits11.Administrator) || super.any(permission);
       }
       /**
        * Checks whether the bitfield has a permission, or multiple permissions.
@@ -60244,7 +60244,7 @@ var require_PermissionsBitField = __commonJS({
        * @returns {boolean}
        */
       has(permission, checkAdmin = true) {
-        return checkAdmin && super.has(PermissionFlagsBits10.Administrator) || super.has(permission);
+        return checkAdmin && super.has(PermissionFlagsBits11.Administrator) || super.has(permission);
       }
       /**
        * Gets an {@link Array} of bitfield names based on the permissions available.
@@ -60282,7 +60282,7 @@ var require_Role = __commonJS({
     "use strict";
     var { roleMention } = require_dist8();
     var { DiscordSnowflake } = require_cjs3();
-    var { PermissionFlagsBits: PermissionFlagsBits10 } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits11 } = require_v106();
     var Base = require_Base();
     var { DiscordjsError: DiscordjsError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var PermissionsBitField2 = require_PermissionsBitField();
@@ -60394,7 +60394,7 @@ var require_Role = __commonJS({
       get editable() {
         if (this.managed) return false;
         const clientMember = this.guild.members.resolve(this.client.user);
-        if (!clientMember.permissions.has(PermissionFlagsBits10.ManageRoles)) return false;
+        if (!clientMember.permissions.has(PermissionFlagsBits11.ManageRoles)) return false;
         return clientMember.roles.highest.comparePositionTo(this) > 0;
       }
       /**
@@ -60965,7 +60965,7 @@ var require_GuildChannel = __commonJS({
   "../../node_modules/.pnpm/discord.js@14.26.4/node_modules/discord.js/src/structures/GuildChannel.js"(exports2, module2) {
     "use strict";
     var { Snowflake } = require_cjs3();
-    var { PermissionFlagsBits: PermissionFlagsBits10, ChannelType } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits11, ChannelType } = require_v106();
     var { BaseChannel } = require_BaseChannel();
     var { DiscordjsError: DiscordjsError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var PermissionOverwriteManager = require_PermissionOverwriteManager();
@@ -61105,7 +61105,7 @@ var require_GuildChannel = __commonJS({
         }
         const roles = member.roles.cache;
         const permissions = new PermissionsBitField2(roles.map((role) => role.permissions));
-        if (checkAdmin && permissions.has(PermissionFlagsBits10.Administrator)) {
+        if (checkAdmin && permissions.has(PermissionFlagsBits11.Administrator)) {
           return new PermissionsBitField2(PermissionsBitField2.All).freeze();
         }
         const overwrites = this.overwritesFor(member, true, roles);
@@ -61120,7 +61120,7 @@ var require_GuildChannel = __commonJS({
        * @private
        */
       rolePermissions(role, checkAdmin) {
-        if (checkAdmin && role.permissions.has(PermissionFlagsBits10.Administrator)) {
+        if (checkAdmin && role.permissions.has(PermissionFlagsBits11.Administrator)) {
           return new PermissionsBitField2(PermissionsBitField2.All).freeze();
         }
         const basePermissions = new PermissionsBitField2([role.permissions, role.guild.roles.everyone.permissions]);
@@ -61146,7 +61146,7 @@ var require_GuildChannel = __commonJS({
        */
       get members() {
         return this.guild.members.cache.filter(
-          (member) => this.permissionsFor(member).has(PermissionFlagsBits10.ViewChannel, false)
+          (member) => this.permissionsFor(member).has(PermissionFlagsBits11.ViewChannel, false)
         );
       }
       /**
@@ -61280,9 +61280,9 @@ var require_GuildChannel = __commonJS({
         if (this.client.user.id === this.guild.ownerId) return true;
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits10.Administrator, false)) return true;
+        if (permissions.has(PermissionFlagsBits11.Administrator, false)) return true;
         if (this.guild.members.me.communicationDisabledUntilTimestamp > Date.now()) return false;
-        const bitfield = VoiceBasedChannelTypes.includes(this.type) ? PermissionFlagsBits10.ManageChannels | PermissionFlagsBits10.Connect : PermissionFlagsBits10.ViewChannel | PermissionFlagsBits10.ManageChannels;
+        const bitfield = VoiceBasedChannelTypes.includes(this.type) ? PermissionFlagsBits11.ManageChannels | PermissionFlagsBits11.Connect : PermissionFlagsBits11.ViewChannel | PermissionFlagsBits11.ManageChannels;
         return permissions.has(bitfield, false);
       }
       /**
@@ -61294,7 +61294,7 @@ var require_GuildChannel = __commonJS({
         if (this.client.user.id === this.guild.ownerId) return true;
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        return permissions.has(PermissionFlagsBits10.ViewChannel, false);
+        return permissions.has(PermissionFlagsBits11.ViewChannel, false);
       }
       /**
        * Deletes this channel.
@@ -63601,7 +63601,7 @@ var require_InviteGuild = __commonJS({
 var require_Invite = __commonJS({
   "../../node_modules/.pnpm/discord.js@14.26.4/node_modules/discord.js/src/structures/Invite.js"(exports2, module2) {
     "use strict";
-    var { RouteBases, Routes: Routes3, PermissionFlagsBits: PermissionFlagsBits10 } = require_v106();
+    var { RouteBases, Routes: Routes3, PermissionFlagsBits: PermissionFlagsBits11 } = require_v106();
     var Base = require_Base();
     var { GuildScheduledEvent } = require_GuildScheduledEvent();
     var IntegrationApplication = require_IntegrationApplication();
@@ -63735,7 +63735,7 @@ var require_Invite = __commonJS({
         if (!guild || !this.client.guilds.cache.has(guild.id)) return false;
         if (!guild.members.me) throw new DiscordjsError2(ErrorCodes2.GuildUncachedMe);
         return Boolean(
-          this.channel?.permissionsFor(this.client.user).has(PermissionFlagsBits10.ManageChannels, false) || guild.members.me.permissions.has(PermissionFlagsBits10.ManageGuild)
+          this.channel?.permissionsFor(this.client.user).has(PermissionFlagsBits11.ManageChannels, false) || guild.members.me.permissions.has(PermissionFlagsBits11.ManageGuild)
         );
       }
       /**
@@ -76450,7 +76450,7 @@ var require_GuildEmojiRoleManager = __commonJS({
 var require_GuildEmoji = __commonJS({
   "../../node_modules/.pnpm/discord.js@14.26.4/node_modules/discord.js/src/structures/GuildEmoji.js"(exports2, module2) {
     "use strict";
-    var { PermissionFlagsBits: PermissionFlagsBits10 } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits11 } = require_v106();
     var BaseGuildEmoji = require_BaseGuildEmoji();
     var { DiscordjsError: DiscordjsError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var GuildEmojiRoleManager = require_GuildEmojiRoleManager();
@@ -76483,7 +76483,7 @@ var require_GuildEmoji = __commonJS({
        */
       get deletable() {
         if (!this.guild.members.me) throw new DiscordjsError2(ErrorCodes2.GuildUncachedMe);
-        return !this.managed && this.guild.members.me.permissions.has(PermissionFlagsBits10.ManageGuildExpressions);
+        return !this.managed && this.guild.members.me.permissions.has(PermissionFlagsBits11.ManageGuildExpressions);
       }
       /**
        * A manager for roles this emoji is active for.
@@ -77802,7 +77802,7 @@ var require_Message = __commonJS({
       ChannelType,
       MessageType,
       MessageFlags,
-      PermissionFlagsBits: PermissionFlagsBits10,
+      PermissionFlagsBits: PermissionFlagsBits11,
       MessageReferenceType
     } = require_v106();
     var Attachment = require_Attachment();
@@ -78246,7 +78246,7 @@ var require_Message = __commonJS({
           if (this.channel.archived) return false;
           if (this.channel.locked) {
             const permissions = this.channel.permissionsFor(this.client.user);
-            if (!permissions?.has(PermissionFlagsBits10.ManageThreads, true)) return false;
+            if (!permissions?.has(PermissionFlagsBits11.ManageThreads, true)) return false;
           }
         }
         return precheck;
@@ -78266,8 +78266,8 @@ var require_Message = __commonJS({
         }
         const permissions = this.channel?.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits10.Administrator, false)) return true;
-        return this.type !== MessageType.AutoModerationAction && this.author.id === this.client.user.id || permissions.has(PermissionFlagsBits10.ManageMessages, false) && !this.guild.members.me.isCommunicationDisabled();
+        if (permissions.has(PermissionFlagsBits11.Administrator, false)) return true;
+        return this.type !== MessageType.AutoModerationAction && this.author.id === this.client.user.id || permissions.has(PermissionFlagsBits11.ManageMessages, false) && !this.guild.members.me.isCommunicationDisabled();
       }
       /**
        * Whether the message is bulk deletable by the client user
@@ -78278,7 +78278,7 @@ var require_Message = __commonJS({
        * channel.bulkDelete(messages.filter(message => message.bulkDeletable));
        */
       get bulkDeletable() {
-        return (this.inGuild() && Date.now() - this.createdTimestamp < MaxBulkDeletableMessageAge && this.deletable && this.channel?.permissionsFor(this.client.user).has(PermissionFlagsBits10.ManageMessages, false)) ?? false;
+        return (this.inGuild() && Date.now() - this.createdTimestamp < MaxBulkDeletableMessageAge && this.deletable && this.channel?.permissionsFor(this.client.user).has(PermissionFlagsBits11.ManageMessages, false)) ?? false;
       }
       /**
        * Whether the message is pinnable by the client user
@@ -78292,7 +78292,7 @@ var require_Message = __commonJS({
         if (!channel || channel.isVoiceBased() || !channel.viewable) return false;
         const permissions = channel?.permissionsFor(this.client.user);
         if (!permissions) return false;
-        return permissions.has(PermissionFlagsBits10.ReadMessageHistory | PermissionFlagsBits10.PinMessages);
+        return permissions.has(PermissionFlagsBits11.ReadMessageHistory | PermissionFlagsBits11.PinMessages);
       }
       /**
        * Fetches the Message this crosspost/reply/pin-add references, if available to the client
@@ -78313,7 +78313,7 @@ var require_Message = __commonJS({
        * @readonly
        */
       get crosspostable() {
-        const bitfield = PermissionFlagsBits10.SendMessages | (this.author.id === this.client.user.id ? PermissionsBitField2.DefaultBit : PermissionFlagsBits10.ManageMessages);
+        const bitfield = PermissionFlagsBits11.SendMessages | (this.author.id === this.client.user.id ? PermissionsBitField2.DefaultBit : PermissionFlagsBits11.ManageMessages);
         const { channel } = this;
         return Boolean(
           channel?.type === ChannelType.GuildAnnouncement && !this.flags.has(MessageFlags.Crossposted) && this.reference?.type !== MessageReferenceType.Forward && this.type === MessageType.Default && !this.poll && channel.viewable && channel.permissionsFor(this.client.user)?.has(bitfield, false)
@@ -79506,7 +79506,7 @@ var require_GuildMemberFlagsBitField = __commonJS({
 var require_GuildMember = __commonJS({
   "../../node_modules/.pnpm/discord.js@14.26.4/node_modules/discord.js/src/structures/GuildMember.js"(exports2) {
     "use strict";
-    var { PermissionFlagsBits: PermissionFlagsBits10 } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits11 } = require_v106();
     var Base = require_Base();
     var VoiceState = require_VoiceState();
     var TextBasedChannel = require_TextBasedChannel();
@@ -79752,7 +79752,7 @@ var require_GuildMember = __commonJS({
        */
       get kickable() {
         if (!this.guild.members.me) throw new DiscordjsError2(ErrorCodes2.GuildUncachedMe);
-        return this.manageable && this.guild.members.me.permissions.has(PermissionFlagsBits10.KickMembers);
+        return this.manageable && this.guild.members.me.permissions.has(PermissionFlagsBits11.KickMembers);
       }
       /**
        * Whether this member is bannable by the client user
@@ -79761,7 +79761,7 @@ var require_GuildMember = __commonJS({
        */
       get bannable() {
         if (!this.guild.members.me) throw new DiscordjsError2(ErrorCodes2.GuildUncachedMe);
-        return this.manageable && this.guild.members.me.permissions.has(PermissionFlagsBits10.BanMembers);
+        return this.manageable && this.guild.members.me.permissions.has(PermissionFlagsBits11.BanMembers);
       }
       /**
        * Whether this member is moderatable by the client user
@@ -79769,7 +79769,7 @@ var require_GuildMember = __commonJS({
        * @readonly
        */
       get moderatable() {
-        return !this.permissions.has(PermissionFlagsBits10.Administrator) && this.manageable && (this.guild.members.me?.permissions.has(PermissionFlagsBits10.ModerateMembers) ?? false);
+        return !this.permissions.has(PermissionFlagsBits11.Administrator) && this.manageable && (this.guild.members.me?.permissions.has(PermissionFlagsBits11.ModerateMembers) ?? false);
       }
       /**
        * Whether this member is currently timed out
@@ -82632,7 +82632,7 @@ var require_ThreadChannel = __commonJS({
     "use strict";
     var { DiscordAPIError } = require_dist6();
     var { lazy } = require_dist2();
-    var { RESTJSONErrorCodes, ChannelFlags, ChannelType, PermissionFlagsBits: PermissionFlagsBits10, Routes: Routes3 } = require_v106();
+    var { RESTJSONErrorCodes, ChannelFlags, ChannelType, PermissionFlagsBits: PermissionFlagsBits11, Routes: Routes3 } = require_v106();
     var { BaseChannel } = require_BaseChannel();
     var getThreadOnlyChannel = lazy(() => require_ThreadOnlyChannel());
     var TextBasedChannel = require_TextBasedChannel();
@@ -82992,7 +82992,7 @@ var require_ThreadChannel = __commonJS({
        */
       get joinable() {
         return !this.archived && !this.joined && this.permissionsFor(this.client.user)?.has(
-          this.type === ChannelType.PrivateThread ? PermissionFlagsBits10.ManageThreads : PermissionFlagsBits10.ViewChannel,
+          this.type === ChannelType.PrivateThread ? PermissionFlagsBits11.ManageThreads : PermissionFlagsBits11.ViewChannel,
           false
         );
       }
@@ -83004,8 +83004,8 @@ var require_ThreadChannel = __commonJS({
       get manageable() {
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits10.Administrator, false)) return true;
-        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits10.ManageThreads, false);
+        if (permissions.has(PermissionFlagsBits11.Administrator, false)) return true;
+        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits11.ManageThreads, false);
       }
       /**
        * Whether the thread is viewable by the client user
@@ -83016,7 +83016,7 @@ var require_ThreadChannel = __commonJS({
         if (this.client.user.id === this.guild.ownerId) return true;
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        return permissions.has(PermissionFlagsBits10.ViewChannel, false);
+        return permissions.has(PermissionFlagsBits11.ViewChannel, false);
       }
       /**
        * Whether the client user can send messages in this thread
@@ -83026,8 +83026,8 @@ var require_ThreadChannel = __commonJS({
       get sendable() {
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits10.Administrator, false)) return true;
-        return !(this.archived && this.locked && !this.manageable) && (this.type !== ChannelType.PrivateThread || this.joined || this.manageable) && permissions.has(PermissionFlagsBits10.SendMessagesInThreads, false) && this.guild.members.me.communicationDisabledUntilTimestamp < Date.now();
+        if (permissions.has(PermissionFlagsBits11.Administrator, false)) return true;
+        return !(this.archived && this.locked && !this.manageable) && (this.type !== ChannelType.PrivateThread || this.joined || this.manageable) && permissions.has(PermissionFlagsBits11.SendMessagesInThreads, false) && this.guild.members.me.communicationDisabledUntilTimestamp < Date.now();
       }
       /**
        * Whether the thread is unarchivable by the client user
@@ -83521,7 +83521,7 @@ var require_BaseGuildVoiceChannel = __commonJS({
   "../../node_modules/.pnpm/discord.js@14.26.4/node_modules/discord.js/src/structures/BaseGuildVoiceChannel.js"(exports2, module2) {
     "use strict";
     var { Collection: Collection3 } = require_dist7();
-    var { PermissionFlagsBits: PermissionFlagsBits10 } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits11 } = require_v106();
     var GuildChannel = require_GuildChannel();
     var TextBasedChannel = require_TextBasedChannel();
     var GuildMessageManager = require_GuildMessageManager();
@@ -83592,8 +83592,8 @@ var require_BaseGuildVoiceChannel = __commonJS({
         if (!this.viewable) return false;
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits10.Administrator, false)) return true;
-        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits10.Connect, false);
+        if (permissions.has(PermissionFlagsBits11.Administrator, false)) return true;
+        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits11.Connect, false);
       }
       /**
        * Creates an invite to this guild channel.
@@ -83777,7 +83777,7 @@ var require_TextChannel = __commonJS({
 var require_VoiceChannel = __commonJS({
   "../../node_modules/.pnpm/discord.js@14.26.4/node_modules/discord.js/src/structures/VoiceChannel.js"(exports2, module2) {
     "use strict";
-    var { PermissionFlagsBits: PermissionFlagsBits10, Routes: Routes3 } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits11, Routes: Routes3 } = require_v106();
     var BaseGuildVoiceChannel = require_BaseGuildVoiceChannel();
     var VoiceChannel = class extends BaseGuildVoiceChannel {
       /**
@@ -83787,7 +83787,7 @@ var require_VoiceChannel = __commonJS({
        */
       get joinable() {
         if (!super.joinable) return false;
-        if (this.full && !this.permissionsFor(this.client.user).has(PermissionFlagsBits10.MoveMembers, false)) return false;
+        if (this.full && !this.permissionsFor(this.client.user).has(PermissionFlagsBits11.MoveMembers, false)) return false;
         return true;
       }
       /**
@@ -83798,8 +83798,8 @@ var require_VoiceChannel = __commonJS({
       get speakable() {
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits10.Administrator, false)) return true;
-        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits10.Speak, false);
+        if (permissions.has(PermissionFlagsBits11.Administrator, false)) return true;
+        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits11.Speak, false);
       }
       /**
        * @typedef {Object} SendSoundboardSoundOptions
@@ -96876,7 +96876,7 @@ var require_GuildEmojiManager = __commonJS({
   "../../node_modules/.pnpm/discord.js@14.26.4/node_modules/discord.js/src/managers/GuildEmojiManager.js"(exports2, module2) {
     "use strict";
     var { Collection: Collection3 } = require_dist7();
-    var { Routes: Routes3, PermissionFlagsBits: PermissionFlagsBits10 } = require_v106();
+    var { Routes: Routes3, PermissionFlagsBits: PermissionFlagsBits11 } = require_v106();
     var BaseGuildEmojiManager2 = require_BaseGuildEmojiManager();
     var { DiscordjsError: DiscordjsError2, DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var { resolveImage } = require_DataResolver();
@@ -97015,7 +97015,7 @@ var require_GuildEmojiManager = __commonJS({
         }
         const { me } = this.guild.members;
         if (!me) throw new DiscordjsError2(ErrorCodes2.GuildUncachedMe);
-        if (!me.permissions.any(PermissionFlagsBits10.CreateGuildExpressions | PermissionFlagsBits10.ManageGuildExpressions)) {
+        if (!me.permissions.any(PermissionFlagsBits11.CreateGuildExpressions | PermissionFlagsBits11.ManageGuildExpressions)) {
           throw new DiscordjsError2(ErrorCodes2.MissingManageGuildExpressionsPermission, this.guild);
         }
         const data = await this.client.rest.get(Routes3.guildEmoji(this.guild.id, emoji.id));
@@ -107428,20 +107428,52 @@ app.use("/api", routes_default);
 var app_default = app;
 
 // src/bot/index.ts
-var import_discord22 = __toESM(require_src2(), 1);
+var import_discord23 = __toESM(require_src2(), 1);
 
 // src/bot/commands/moderation/kick.ts
+var import_discord2 = __toESM(require_src2(), 1);
+
+// src/bot/permissions.ts
 var import_discord = __toESM(require_src2(), 1);
+function isOwner(interaction) {
+  return interaction.guild?.ownerId === interaction.user.id;
+}
+function isAdmin(interaction) {
+  const member = interaction.member;
+  if (!member || typeof member.permissions === "string") return false;
+  return member.permissions.has(import_discord.PermissionFlagsBits.Administrator);
+}
+function isOwnerOrAdmin(interaction) {
+  return isOwner(interaction) || isAdmin(interaction);
+}
+async function requireOwner(interaction) {
+  if (isOwner(interaction)) return true;
+  await interaction.reply({
+    content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0645\u0627\u0644\u0643 \u0627\u0644\u0633\u064A\u0631\u0641\u0631 \u0641\u0642\u0637.",
+    ephemeral: true
+  });
+  return false;
+}
+async function requireOwnerOrAdmin(interaction) {
+  if (isOwnerOrAdmin(interaction)) return true;
+  await interaction.reply({
+    content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0644\u0645\u0627\u0644\u0643 \u0623\u0648 \u0627\u0644\u0623\u062F\u0645\u0646 \u0641\u0642\u0637.",
+    ephemeral: true
+  });
+  return false;
+}
+
+// src/bot/commands/moderation/kick.ts
 var kick = {
-  data: new import_discord.SlashCommandBuilder().setName("kick").setDescription("\u0637\u0631\u062F \u0639\u0636\u0648 \u0645\u0646 \u0627\u0644\u0633\u064A\u0631\u0641\u0631").addUserOption(
+  data: new import_discord2.SlashCommandBuilder().setName("kick").setDescription("\u0637\u0631\u062F \u0639\u0636\u0648 \u0645\u0646 \u0627\u0644\u0633\u064A\u0631\u0641\u0631").addUserOption(
     (option) => option.setName("\u0627\u0644\u0639\u0636\u0648").setDescription("\u0627\u0644\u0639\u0636\u0648 \u0627\u0644\u0645\u0631\u0627\u062F \u0637\u0631\u062F\u0647").setRequired(true)
   ).addStringOption(
     (option) => option.setName("\u0627\u0644\u0633\u0628\u0628").setDescription("\u0633\u0628\u0628 \u0627\u0644\u0637\u0631\u062F").setRequired(false)
-  ).setDefaultMemberPermissions(import_discord.PermissionFlagsBits.KickMembers),
+  ).setDefaultMemberPermissions(import_discord2.PermissionFlagsBits.KickMembers),
   async execute(interaction) {
     await interaction.deferReply();
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0645\u0627\u0644\u0643 \u0627\u0644\u0633\u064A\u0631\u0641\u0631 \u0641\u0642\u0637." });
+    if (!isOwnerOrAdmin(interaction)) {
+      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0644\u0645\u0627\u0644\u0643 \u0623\u0648 \u0627\u0644\u0623\u062F\u0645\u0646 \u0641\u0642\u0637." });
       return;
     }
     const target = interaction.options.getUser("\u0627\u0644\u0639\u0636\u0648", true);
@@ -107456,7 +107488,7 @@ var kick = {
       return;
     }
     await member.kick(reason);
-    const embed = new import_discord.EmbedBuilder().setColor(16739125).setTitle("\u{1F462} \u062A\u0645 \u0627\u0644\u0637\u0631\u062F").addFields(
+    const embed = new import_discord2.EmbedBuilder().setColor(16739125).setTitle("\u{1F462} \u062A\u0645 \u0627\u0644\u0637\u0631\u062F").addFields(
       { name: "\u0627\u0644\u0639\u0636\u0648", value: `${target.tag}`, inline: true },
       { name: "\u0628\u0648\u0627\u0633\u0637\u0629", value: `${interaction.user.tag}`, inline: true },
       { name: "\u0627\u0644\u0633\u0628\u0628", value: reason }
@@ -107466,19 +107498,19 @@ var kick = {
 };
 
 // src/bot/commands/moderation/ban.ts
-var import_discord2 = __toESM(require_src2(), 1);
+var import_discord3 = __toESM(require_src2(), 1);
 var ban = {
-  data: new import_discord2.SlashCommandBuilder().setName("ban").setDescription("\u062D\u0638\u0631 \u0639\u0636\u0648 \u0645\u0646 \u0627\u0644\u0633\u064A\u0631\u0641\u0631").addUserOption(
+  data: new import_discord3.SlashCommandBuilder().setName("ban").setDescription("\u062D\u0638\u0631 \u0639\u0636\u0648 \u0645\u0646 \u0627\u0644\u0633\u064A\u0631\u0641\u0631").addUserOption(
     (option) => option.setName("\u0627\u0644\u0639\u0636\u0648").setDescription("\u0627\u0644\u0639\u0636\u0648 \u0627\u0644\u0645\u0631\u0627\u062F \u062D\u0638\u0631\u0647").setRequired(true)
   ).addStringOption(
     (option) => option.setName("\u0627\u0644\u0633\u0628\u0628").setDescription("\u0633\u0628\u0628 \u0627\u0644\u062D\u0638\u0631").setRequired(false)
   ).addIntegerOption(
     (option) => option.setName("\u062D\u0630\u0641_\u0627\u0644\u0631\u0633\u0627\u0626\u0644").setDescription("\u062D\u0630\u0641 \u0631\u0633\u0627\u0626\u0644 \u0627\u0644\u0639\u0636\u0648 (\u0628\u0627\u0644\u0623\u064A\u0627\u0645)").setMinValue(0).setMaxValue(7).setRequired(false)
-  ).setDefaultMemberPermissions(import_discord2.PermissionFlagsBits.BanMembers),
+  ).setDefaultMemberPermissions(import_discord3.PermissionFlagsBits.BanMembers),
   async execute(interaction) {
     await interaction.deferReply();
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0645\u0627\u0644\u0643 \u0627\u0644\u0633\u064A\u0631\u0641\u0631 \u0641\u0642\u0637." });
+    if (!isOwnerOrAdmin(interaction)) {
+      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0644\u0645\u0627\u0644\u0643 \u0623\u0648 \u0627\u0644\u0623\u062F\u0645\u0646 \u0641\u0642\u0637." });
       return;
     }
     const target = interaction.options.getUser("\u0627\u0644\u0639\u0636\u0648", true);
@@ -107493,7 +107525,7 @@ var ban = {
       reason,
       deleteMessageSeconds: deleteMessageDays * 86400
     });
-    const embed = new import_discord2.EmbedBuilder().setColor(15158332).setTitle("\u{1F528} \u062A\u0645 \u0627\u0644\u062D\u0638\u0631").addFields(
+    const embed = new import_discord3.EmbedBuilder().setColor(15158332).setTitle("\u{1F528} \u062A\u0645 \u0627\u0644\u062D\u0638\u0631").addFields(
       { name: "\u0627\u0644\u0639\u0636\u0648", value: `${target.tag}`, inline: true },
       { name: "\u0628\u0648\u0627\u0633\u0637\u0629", value: `${interaction.user.tag}`, inline: true },
       { name: "\u0627\u0644\u0633\u0628\u0628", value: reason }
@@ -107503,17 +107535,17 @@ var ban = {
 };
 
 // src/bot/commands/moderation/unban.ts
-var import_discord3 = __toESM(require_src2(), 1);
+var import_discord4 = __toESM(require_src2(), 1);
 var unban = {
-  data: new import_discord3.SlashCommandBuilder().setName("unban").setDescription("\u0631\u0641\u0639 \u062D\u0638\u0631 \u0639\u0636\u0648 \u0645\u0646 \u0627\u0644\u0633\u064A\u0631\u0641\u0631").addStringOption(
+  data: new import_discord4.SlashCommandBuilder().setName("unban").setDescription("\u0631\u0641\u0639 \u062D\u0638\u0631 \u0639\u0636\u0648 \u0645\u0646 \u0627\u0644\u0633\u064A\u0631\u0641\u0631").addStringOption(
     (option) => option.setName("\u0627\u0644\u0645\u0639\u0631\u0641").setDescription("ID \u0627\u0644\u0639\u0636\u0648 \u0627\u0644\u0645\u062D\u0638\u0648\u0631").setRequired(true)
   ).addStringOption(
     (option) => option.setName("\u0627\u0644\u0633\u0628\u0628").setDescription("\u0633\u0628\u0628 \u0631\u0641\u0639 \u0627\u0644\u062D\u0638\u0631").setRequired(false)
-  ).setDefaultMemberPermissions(import_discord3.PermissionFlagsBits.BanMembers),
+  ).setDefaultMemberPermissions(import_discord4.PermissionFlagsBits.BanMembers),
   async execute(interaction) {
     await interaction.deferReply();
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0645\u0627\u0644\u0643 \u0627\u0644\u0633\u064A\u0631\u0641\u0631 \u0641\u0642\u0637." });
+    if (!isOwnerOrAdmin(interaction)) {
+      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0644\u0645\u0627\u0644\u0643 \u0623\u0648 \u0627\u0644\u0623\u062F\u0645\u0646 \u0641\u0642\u0637." });
       return;
     }
     const userId = interaction.options.getString("\u0627\u0644\u0645\u0639\u0631\u0641", true);
@@ -107524,7 +107556,7 @@ var unban = {
       return;
     }
     await interaction.guild?.members.unban(userId, reason);
-    const embed = new import_discord3.EmbedBuilder().setColor(3066993).setTitle("\u2705 \u062A\u0645 \u0631\u0641\u0639 \u0627\u0644\u062D\u0638\u0631").addFields(
+    const embed = new import_discord4.EmbedBuilder().setColor(3066993).setTitle("\u2705 \u062A\u0645 \u0631\u0641\u0639 \u0627\u0644\u062D\u0638\u0631").addFields(
       { name: "\u0627\u0644\u0639\u0636\u0648", value: `${ban2.user.tag}`, inline: true },
       { name: "\u0628\u0648\u0627\u0633\u0637\u0629", value: `${interaction.user.tag}`, inline: true },
       { name: "\u0627\u0644\u0633\u0628\u0628", value: reason }
@@ -107534,19 +107566,19 @@ var unban = {
 };
 
 // src/bot/commands/moderation/mute.ts
-var import_discord4 = __toESM(require_src2(), 1);
+var import_discord5 = __toESM(require_src2(), 1);
 var mute = {
-  data: new import_discord4.SlashCommandBuilder().setName("mute").setDescription("\u0643\u062A\u0645 \u0639\u0636\u0648 (timeout)").addUserOption(
+  data: new import_discord5.SlashCommandBuilder().setName("mute").setDescription("\u0643\u062A\u0645 \u0639\u0636\u0648 (timeout)").addUserOption(
     (option) => option.setName("\u0627\u0644\u0639\u0636\u0648").setDescription("\u0627\u0644\u0639\u0636\u0648 \u0627\u0644\u0645\u0631\u0627\u062F \u0643\u062A\u0645\u0647").setRequired(true)
   ).addIntegerOption(
     (option) => option.setName("\u0627\u0644\u0645\u062F\u0629").setDescription("\u0645\u062F\u0629 \u0627\u0644\u0643\u062A\u0645 \u0628\u0627\u0644\u062F\u0642\u0627\u0626\u0642").setMinValue(1).setMaxValue(40320).setRequired(true)
   ).addStringOption(
     (option) => option.setName("\u0627\u0644\u0633\u0628\u0628").setDescription("\u0633\u0628\u0628 \u0627\u0644\u0643\u062A\u0645").setRequired(false)
-  ).setDefaultMemberPermissions(import_discord4.PermissionFlagsBits.ModerateMembers),
+  ).setDefaultMemberPermissions(import_discord5.PermissionFlagsBits.ModerateMembers),
   async execute(interaction) {
     await interaction.deferReply();
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0645\u0627\u0644\u0643 \u0627\u0644\u0633\u064A\u0631\u0641\u0631 \u0641\u0642\u0637." });
+    if (!isOwnerOrAdmin(interaction)) {
+      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0644\u0645\u0627\u0644\u0643 \u0623\u0648 \u0627\u0644\u0623\u062F\u0645\u0646 \u0641\u0642\u0637." });
       return;
     }
     const target = interaction.options.getUser("\u0627\u0644\u0639\u0636\u0648", true);
@@ -107563,7 +107595,7 @@ var mute = {
     }
     const duration = minutes * 60 * 1e3;
     await member.timeout(duration, reason);
-    const embed = new import_discord4.EmbedBuilder().setColor(15965202).setTitle("\u{1F507} \u062A\u0645 \u0627\u0644\u0643\u062A\u0645").addFields(
+    const embed = new import_discord5.EmbedBuilder().setColor(15965202).setTitle("\u{1F507} \u062A\u0645 \u0627\u0644\u0643\u062A\u0645").addFields(
       { name: "\u0627\u0644\u0639\u0636\u0648", value: `${target.tag}`, inline: true },
       { name: "\u0627\u0644\u0645\u062F\u0629", value: `${minutes} \u062F\u0642\u064A\u0642\u0629`, inline: true },
       { name: "\u0628\u0648\u0627\u0633\u0637\u0629", value: `${interaction.user.tag}`, inline: true },
@@ -107574,15 +107606,15 @@ var mute = {
 };
 
 // src/bot/commands/moderation/unmute.ts
-var import_discord5 = __toESM(require_src2(), 1);
+var import_discord6 = __toESM(require_src2(), 1);
 var unmute = {
-  data: new import_discord5.SlashCommandBuilder().setName("unmute").setDescription("\u0631\u0641\u0639 \u0627\u0644\u0643\u062A\u0645 \u0639\u0646 \u0639\u0636\u0648").addUserOption(
+  data: new import_discord6.SlashCommandBuilder().setName("unmute").setDescription("\u0631\u0641\u0639 \u0627\u0644\u0643\u062A\u0645 \u0639\u0646 \u0639\u0636\u0648").addUserOption(
     (option) => option.setName("\u0627\u0644\u0639\u0636\u0648").setDescription("\u0627\u0644\u0639\u0636\u0648 \u0627\u0644\u0645\u0631\u0627\u062F \u0631\u0641\u0639 \u0627\u0644\u0643\u062A\u0645 \u0639\u0646\u0647").setRequired(true)
-  ).setDefaultMemberPermissions(import_discord5.PermissionFlagsBits.ModerateMembers),
+  ).setDefaultMemberPermissions(import_discord6.PermissionFlagsBits.ModerateMembers),
   async execute(interaction) {
     await interaction.deferReply();
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0645\u0627\u0644\u0643 \u0627\u0644\u0633\u064A\u0631\u0641\u0631 \u0641\u0642\u0637." });
+    if (!isOwnerOrAdmin(interaction)) {
+      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0644\u0645\u0627\u0644\u0643 \u0623\u0648 \u0627\u0644\u0623\u062F\u0645\u0646 \u0641\u0642\u0637." });
       return;
     }
     const target = interaction.options.getUser("\u0627\u0644\u0639\u0636\u0648", true);
@@ -107596,7 +107628,7 @@ var unmute = {
       return;
     }
     await member.timeout(null);
-    const embed = new import_discord5.EmbedBuilder().setColor(3066993).setTitle("\u{1F50A} \u062A\u0645 \u0631\u0641\u0639 \u0627\u0644\u0643\u062A\u0645").addFields(
+    const embed = new import_discord6.EmbedBuilder().setColor(3066993).setTitle("\u{1F50A} \u062A\u0645 \u0631\u0641\u0639 \u0627\u0644\u0643\u062A\u0645").addFields(
       { name: "\u0627\u0644\u0639\u0636\u0648", value: `${target.tag}`, inline: true },
       { name: "\u0628\u0648\u0627\u0633\u0637\u0629", value: `${interaction.user.tag}`, inline: true }
     ).setTimestamp();
@@ -107605,49 +107637,78 @@ var unmute = {
 };
 
 // src/bot/commands/moderation/clear.ts
-var import_discord6 = __toESM(require_src2(), 1);
+var import_discord7 = __toESM(require_src2(), 1);
+var FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1e3;
 var clear = {
-  data: new import_discord6.SlashCommandBuilder().setName("clear").setDescription("\u062D\u0630\u0641 \u0631\u0633\u0627\u0626\u0644 \u0645\u0646 \u0627\u0644\u0642\u0646\u0627\u0629").addIntegerOption(
+  data: new import_discord7.SlashCommandBuilder().setName("clear").setDescription("\u062D\u0630\u0641 \u0631\u0633\u0627\u0626\u0644 \u0645\u0646 \u0627\u0644\u0642\u0646\u0627\u0629").addIntegerOption(
     (option) => option.setName("\u0627\u0644\u0643\u0645\u064A\u0629").setDescription("\u0639\u062F\u062F \u0627\u0644\u0631\u0633\u0627\u0626\u0644 \u0627\u0644\u0645\u0631\u0627\u062F \u062D\u0630\u0641\u0647\u0627 (1-100)").setMinValue(1).setMaxValue(100).setRequired(true)
   ).addUserOption(
     (option) => option.setName("\u0627\u0644\u0639\u0636\u0648").setDescription("\u062D\u0630\u0641 \u0631\u0633\u0627\u0626\u0644 \u0639\u0636\u0648 \u0645\u0639\u064A\u0646 \u0641\u0642\u0637").setRequired(false)
-  ).setDefaultMemberPermissions(import_discord6.PermissionFlagsBits.ManageMessages),
+  ).setDefaultMemberPermissions(import_discord7.PermissionFlagsBits.ManageMessages),
   async execute(interaction) {
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.reply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0645\u0627\u0644\u0643 \u0627\u0644\u0633\u064A\u0631\u0641\u0631 \u0641\u0642\u0637.", ephemeral: true });
+    if (!isOwnerOrAdmin(interaction)) {
+      await interaction.reply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0644\u0645\u0627\u0644\u0643 \u0623\u0648 \u0627\u0644\u0623\u062F\u0645\u0646 \u0641\u0642\u0637.", ephemeral: true });
       return;
     }
     const amount = interaction.options.getInteger("\u0627\u0644\u0643\u0645\u064A\u0629", true);
     const targetUser = interaction.options.getUser("\u0627\u0644\u0639\u0636\u0648");
     const channel = interaction.channel;
-    if (!channel) {
+    if (!channel || !channel.isTextBased() || channel.isDMBased()) {
       await interaction.reply({ content: "\u274C \u0644\u0627 \u064A\u0645\u0643\u0646 \u062D\u0630\u0641 \u0627\u0644\u0631\u0633\u0627\u0626\u0644 \u0641\u064A \u0647\u0630\u0647 \u0627\u0644\u0642\u0646\u0627\u0629.", ephemeral: true });
       return;
     }
-    await interaction.deferReply({ ephemeral: true });
-    let messages = await channel.messages.fetch({ limit: amount });
-    if (targetUser) {
-      messages = messages.filter((m) => m.author.id === targetUser.id);
+    const textChannel = channel;
+    const me = interaction.guild?.members.me;
+    if (me && !textChannel.permissionsFor(me)?.has(import_discord7.PermissionFlagsBits.ManageMessages)) {
+      await interaction.reply({
+        content: "\u274C \u0644\u0627 \u0623\u0645\u0644\u0643 \u0635\u0644\u0627\u062D\u064A\u0629 '\u0625\u062F\u0627\u0631\u0629 \u0627\u0644\u0631\u0633\u0627\u0626\u0644' \u0641\u064A \u0647\u0630\u0647 \u0627\u0644\u0642\u0646\u0627\u0629.",
+        ephemeral: true
+      });
+      return;
     }
-    const deleted = await channel.bulkDelete(messages, true);
-    const embed = new import_discord6.EmbedBuilder().setColor(3447003).setTitle("\u{1F5D1}\uFE0F \u062A\u0645 \u0627\u0644\u062D\u0630\u0641").setDescription(`\u062A\u0645 \u062D\u0630\u0641 **${deleted.size}** \u0631\u0633\u0627\u0644\u0629${targetUser ? ` \u0645\u0646 ${targetUser.tag}` : ""}`).setTimestamp();
-    await interaction.editReply({ embeds: [embed] });
+    await interaction.deferReply({ ephemeral: true });
+    try {
+      let messages = await textChannel.messages.fetch({ limit: amount });
+      if (targetUser) {
+        messages = messages.filter((m) => m.author.id === targetUser.id);
+      }
+      const cutoff = Date.now() - FOURTEEN_DAYS_MS;
+      const deletable = messages.filter((m) => m.createdTimestamp > cutoff);
+      const tooOld = messages.size - deletable.size;
+      if (deletable.size === 0) {
+        await interaction.editReply({
+          content: tooOld > 0 ? "\u26A0\uFE0F \u0644\u0627 \u064A\u0645\u0643\u0646 \u062D\u0630\u0641 \u0647\u0630\u0647 \u0627\u0644\u0631\u0633\u0627\u0626\u0644 \u0644\u0623\u0646\u0647\u0627 \u0623\u0642\u062F\u0645 \u0645\u0646 14 \u064A\u0648\u0645\u0627\u064B (\u0642\u064A\u062F \u062F\u064A\u0633\u0643\u0648\u0631\u062F)." : "\u26A0\uFE0F \u0644\u0627 \u062A\u0648\u062C\u062F \u0631\u0633\u0627\u0626\u0644 \u0645\u0637\u0627\u0628\u0642\u0629 \u0644\u0644\u062D\u0630\u0641."
+        });
+        return;
+      }
+      const deleted = await textChannel.bulkDelete(deletable, true);
+      const embed = new import_discord7.EmbedBuilder().setColor(3447003).setTitle("\u{1F5D1}\uFE0F \u062A\u0645 \u0627\u0644\u062D\u0630\u0641").setDescription(
+        `\u062A\u0645 \u062D\u0630\u0641 **${deleted.size}** \u0631\u0633\u0627\u0644\u0629${targetUser ? ` \u0645\u0646 ${targetUser.tag}` : ""}` + (tooOld > 0 ? `
+\u26A0\uFE0F \u062A\u0645 \u062A\u062C\u0627\u0647\u0644 ${tooOld} \u0631\u0633\u0627\u0644\u0629 \u0623\u0642\u062F\u0645 \u0645\u0646 14 \u064A\u0648\u0645\u0627\u064B.` : "")
+      ).setTimestamp();
+      await interaction.editReply({ embeds: [embed] });
+    } catch (err) {
+      logger.error({ err }, "\u0641\u0634\u0644 \u062D\u0630\u0641 \u0627\u0644\u0631\u0633\u0627\u0626\u0644");
+      await interaction.editReply({
+        content: "\u274C \u062D\u062F\u062B \u062E\u0637\u0623 \u0623\u062B\u0646\u0627\u0621 \u062D\u0630\u0641 \u0627\u0644\u0631\u0633\u0627\u0626\u0644. \u062A\u0623\u0643\u062F \u0645\u0646 \u0635\u0644\u0627\u062D\u064A\u0627\u062A \u0627\u0644\u0628\u0648\u062A \u0641\u064A \u0647\u0630\u0647 \u0627\u0644\u0642\u0646\u0627\u0629."
+      });
+    }
   }
 };
 
 // src/bot/commands/moderation/warn.ts
-var import_discord7 = __toESM(require_src2(), 1);
+var import_discord8 = __toESM(require_src2(), 1);
 var warnings = /* @__PURE__ */ new Map();
 var warn = {
-  data: new import_discord7.SlashCommandBuilder().setName("warn").setDescription("\u062A\u062D\u0630\u064A\u0631 \u0639\u0636\u0648").addUserOption(
+  data: new import_discord8.SlashCommandBuilder().setName("warn").setDescription("\u062A\u062D\u0630\u064A\u0631 \u0639\u0636\u0648").addUserOption(
     (option) => option.setName("\u0627\u0644\u0639\u0636\u0648").setDescription("\u0627\u0644\u0639\u0636\u0648 \u0627\u0644\u0645\u0631\u0627\u062F \u062A\u062D\u0630\u064A\u0631\u0647").setRequired(true)
   ).addStringOption(
     (option) => option.setName("\u0627\u0644\u0633\u0628\u0628").setDescription("\u0633\u0628\u0628 \u0627\u0644\u062A\u062D\u0630\u064A\u0631").setRequired(true)
-  ).setDefaultMemberPermissions(import_discord7.PermissionFlagsBits.ModerateMembers),
+  ).setDefaultMemberPermissions(import_discord8.PermissionFlagsBits.ModerateMembers),
   async execute(interaction) {
     await interaction.deferReply();
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0645\u0627\u0644\u0643 \u0627\u0644\u0633\u064A\u0631\u0641\u0631 \u0641\u0642\u0637." });
+    if (!isOwnerOrAdmin(interaction)) {
+      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0644\u0645\u0627\u0644\u0643 \u0623\u0648 \u0627\u0644\u0623\u062F\u0645\u0646 \u0641\u0642\u0637." });
       return;
     }
     const target = interaction.options.getUser("\u0627\u0644\u0639\u0636\u0648", true);
@@ -107656,7 +107717,7 @@ var warn = {
     const userWarnings = warnings.get(key) ?? [];
     userWarnings.push({ reason, moderator: interaction.user.tag, timestamp: /* @__PURE__ */ new Date() });
     warnings.set(key, userWarnings);
-    const embed = new import_discord7.EmbedBuilder().setColor(15844367).setTitle("\u26A0\uFE0F \u062A\u062D\u0630\u064A\u0631").addFields(
+    const embed = new import_discord8.EmbedBuilder().setColor(15844367).setTitle("\u26A0\uFE0F \u062A\u062D\u0630\u064A\u0631").addFields(
       { name: "\u0627\u0644\u0639\u0636\u0648", value: `${target.tag}`, inline: true },
       { name: "\u0627\u0644\u062A\u062D\u0630\u064A\u0631 \u0631\u0642\u0645", value: `${userWarnings.length}`, inline: true },
       { name: "\u0628\u0648\u0627\u0633\u0637\u0629", value: `${interaction.user.tag}`, inline: true },
@@ -107666,7 +107727,7 @@ var warn = {
     try {
       await target.send({
         embeds: [
-          new import_discord7.EmbedBuilder().setColor(15844367).setTitle(`\u26A0\uFE0F \u062A\u0644\u0642\u064A\u062A \u062A\u062D\u0630\u064A\u0631\u0627\u064B \u0641\u064A ${interaction.guild?.name}`).addFields(
+          new import_discord8.EmbedBuilder().setColor(15844367).setTitle(`\u26A0\uFE0F \u062A\u0644\u0642\u064A\u062A \u062A\u062D\u0630\u064A\u0631\u0627\u064B \u0641\u064A ${interaction.guild?.name}`).addFields(
             { name: "\u0627\u0644\u0633\u0628\u0628", value: reason },
             { name: "\u0639\u062F\u062F \u0627\u0644\u062A\u062D\u0630\u064A\u0631\u0627\u062A", value: `${userWarnings.length}` }
           ).setTimestamp()
@@ -107678,21 +107739,21 @@ var warn = {
 };
 
 // src/bot/commands/moderation/warnings.ts
-var import_discord8 = __toESM(require_src2(), 1);
+var import_discord9 = __toESM(require_src2(), 1);
 var warningsList = {
-  data: new import_discord8.SlashCommandBuilder().setName("warnings").setDescription("\u0639\u0631\u0636 \u062A\u062D\u0630\u064A\u0631\u0627\u062A \u0639\u0636\u0648").addUserOption(
+  data: new import_discord9.SlashCommandBuilder().setName("warnings").setDescription("\u0639\u0631\u0636 \u062A\u062D\u0630\u064A\u0631\u0627\u062A \u0639\u0636\u0648").addUserOption(
     (option) => option.setName("\u0627\u0644\u0639\u0636\u0648").setDescription("\u0627\u0644\u0639\u0636\u0648 \u0627\u0644\u0645\u0631\u0627\u062F \u0639\u0631\u0636 \u062A\u062D\u0630\u064A\u0631\u0627\u062A\u0647").setRequired(true)
-  ).setDefaultMemberPermissions(import_discord8.PermissionFlagsBits.ModerateMembers),
+  ).setDefaultMemberPermissions(import_discord9.PermissionFlagsBits.ModerateMembers),
   async execute(interaction) {
     await interaction.deferReply();
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0645\u0627\u0644\u0643 \u0627\u0644\u0633\u064A\u0631\u0641\u0631 \u0641\u0642\u0637." });
+    if (!isOwnerOrAdmin(interaction)) {
+      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0644\u0645\u0627\u0644\u0643 \u0623\u0648 \u0627\u0644\u0623\u062F\u0645\u0646 \u0641\u0642\u0637." });
       return;
     }
     const target = interaction.options.getUser("\u0627\u0644\u0639\u0636\u0648", true);
     const key = `${interaction.guildId}-${target.id}`;
     const userWarnings = warnings.get(key) ?? [];
-    const embed = new import_discord8.EmbedBuilder().setColor(15844367).setTitle(`\u26A0\uFE0F \u062A\u062D\u0630\u064A\u0631\u0627\u062A ${target.tag}`).setThumbnail(target.displayAvatarURL());
+    const embed = new import_discord9.EmbedBuilder().setColor(15844367).setTitle(`\u26A0\uFE0F \u062A\u062D\u0630\u064A\u0631\u0627\u062A ${target.tag}`).setThumbnail(target.displayAvatarURL());
     if (userWarnings.length === 0) {
       embed.setDescription("\u0644\u0627 \u062A\u0648\u062C\u062F \u062A\u062D\u0630\u064A\u0631\u0627\u062A \u0644\u0647\u0630\u0627 \u0627\u0644\u0639\u0636\u0648 \u2705");
     } else {
@@ -107711,14 +107772,14 @@ var warningsList = {
 };
 
 // src/bot/commands/fun/ping.ts
-var import_discord9 = __toESM(require_src2(), 1);
+var import_discord10 = __toESM(require_src2(), 1);
 var ping = {
-  data: new import_discord9.SlashCommandBuilder().setName("ping").setDescription("\u0639\u0631\u0636 \u0633\u0631\u0639\u0629 \u0627\u0633\u062A\u062C\u0627\u0628\u0629 \u0627\u0644\u0631\u0628\u0627\u062A"),
+  data: new import_discord10.SlashCommandBuilder().setName("ping").setDescription("\u0639\u0631\u0636 \u0633\u0631\u0639\u0629 \u0627\u0633\u062A\u062C\u0627\u0628\u0629 \u0627\u0644\u0631\u0628\u0627\u062A"),
   async execute(interaction) {
     const sent = await interaction.reply({ content: "\u23F1\uFE0F \u062C\u0627\u0631\u064A \u0627\u0644\u0642\u064A\u0627\u0633...", fetchReply: true });
     const latency = sent.createdTimestamp - interaction.createdTimestamp;
     const wsLatency = interaction.client.ws.ping;
-    const embed = new import_discord9.EmbedBuilder().setColor(5793266).setTitle("\u{1F3D3} Pong!").addFields(
+    const embed = new import_discord10.EmbedBuilder().setColor(5793266).setTitle("\u{1F3D3} Pong!").addFields(
       { name: "\u23F1\uFE0F \u0632\u0645\u0646 \u0627\u0644\u0627\u0633\u062A\u062C\u0627\u0628\u0629", value: `${latency}ms`, inline: true },
       { name: "\u{1F493} WebSocket", value: `${wsLatency}ms`, inline: true }
     ).setTimestamp();
@@ -107727,7 +107788,7 @@ var ping = {
 };
 
 // src/bot/commands/fun/joke.ts
-var import_discord10 = __toESM(require_src2(), 1);
+var import_discord11 = __toESM(require_src2(), 1);
 var jokes = [
   "\u0644\u0645\u0627\u0630\u0627 \u0644\u0627 \u064A\u062B\u0642 \u0627\u0644\u0645\u0628\u0631\u0645\u062C\u0648\u0646 \u0641\u064A \u0627\u0644\u0637\u0628\u064A\u0639\u0629\u061F \u0644\u0623\u0646 \u0641\u064A\u0647\u0627 bugs \u0643\u062B\u064A\u0631\u0629! \u{1F41B}",
   "\u0645\u0627 \u0627\u0644\u0641\u0631\u0642 \u0628\u064A\u0646 \u0627\u0644\u0628\u064A\u062A\u0632\u0627 \u0648\u0627\u0644\u0645\u0628\u0631\u0645\u062C\u061F \u0627\u0644\u0628\u064A\u062A\u0632\u0627 \u062A\u064F\u0648\u0635\u064E\u0651\u0644! \u{1F355}",
@@ -107741,42 +107802,42 @@ var jokes = [
   "\u062F\u062E\u0644 \u0627\u0644\u0645\u0628\u0631\u0645\u062C \u0627\u0644\u0645\u0637\u0639\u0645 \u0641\u0637\u0644\u0628 \u0632\u0648\u062C \u0645\u0646 \u0627\u0644\u0628\u064A\u0636... \u0627\u0644\u062C\u0631\u0633\u0648\u0646 \u0642\u0627\u0644: \u0643\u064A\u0641 \u062A\u062D\u0628\u0647\u0645\u061F \u0642\u0627\u0644: true! \u{1F95A}"
 ];
 var joke = {
-  data: new import_discord10.SlashCommandBuilder().setName("joke").setDescription("\u0646\u0643\u062A\u0629 \u0639\u0634\u0648\u0627\u0626\u064A\u0629 \u0644\u0644\u0645\u0628\u0631\u0645\u062C\u064A\u0646"),
+  data: new import_discord11.SlashCommandBuilder().setName("joke").setDescription("\u0646\u0643\u062A\u0629 \u0639\u0634\u0648\u0627\u0626\u064A\u0629 \u0644\u0644\u0645\u0628\u0631\u0645\u062C\u064A\u0646"),
   async execute(interaction) {
     const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
-    const embed = new import_discord10.EmbedBuilder().setColor(1752220).setTitle("\u{1F602} \u0646\u0643\u062A\u0629 \u0627\u0644\u064A\u0648\u0645").setDescription(randomJoke).setTimestamp();
+    const embed = new import_discord11.EmbedBuilder().setColor(1752220).setTitle("\u{1F602} \u0646\u0643\u062A\u0629 \u0627\u0644\u064A\u0648\u0645").setDescription(randomJoke).setTimestamp();
     await interaction.reply({ embeds: [embed] });
   }
 };
 
 // src/bot/commands/fun/roll.ts
-var import_discord11 = __toESM(require_src2(), 1);
+var import_discord12 = __toESM(require_src2(), 1);
 var roll = {
-  data: new import_discord11.SlashCommandBuilder().setName("roll").setDescription("\u0631\u0645\u064A \u0646\u0631\u062F").addIntegerOption(
+  data: new import_discord12.SlashCommandBuilder().setName("roll").setDescription("\u0631\u0645\u064A \u0646\u0631\u062F").addIntegerOption(
     (option) => option.setName("\u0627\u0644\u0623\u0648\u062C\u0647").setDescription("\u0639\u062F\u062F \u0623\u0648\u062C\u0647 \u0627\u0644\u0646\u0631\u062F (\u0627\u0641\u062A\u0631\u0627\u0636\u064A: 6)").setMinValue(2).setMaxValue(1e3).setRequired(false)
   ),
   async execute(interaction) {
     const sides = interaction.options.getInteger("\u0627\u0644\u0623\u0648\u062C\u0647") ?? 6;
     const result = Math.floor(Math.random() * sides) + 1;
-    const embed = new import_discord11.EmbedBuilder().setColor(10181046).setTitle("\u{1F3B2} \u0631\u0645\u064A \u0627\u0644\u0646\u0631\u062F").setDescription(`\u0631\u0645\u064A\u062A \u0646\u0631\u062F\u0627\u064B \u0628\u0640 **${sides}** \u0623\u0648\u062C\u0647
+    const embed = new import_discord12.EmbedBuilder().setColor(10181046).setTitle("\u{1F3B2} \u0631\u0645\u064A \u0627\u0644\u0646\u0631\u062F").setDescription(`\u0631\u0645\u064A\u062A \u0646\u0631\u062F\u0627\u064B \u0628\u0640 **${sides}** \u0623\u0648\u062C\u0647
 \u0627\u0644\u0646\u062A\u064A\u062C\u0629: **${result}**`).setTimestamp();
     await interaction.reply({ embeds: [embed] });
   }
 };
 
 // src/bot/commands/fun/flip.ts
-var import_discord12 = __toESM(require_src2(), 1);
+var import_discord13 = __toESM(require_src2(), 1);
 var flip = {
-  data: new import_discord12.SlashCommandBuilder().setName("flip").setDescription("\u0631\u0645\u064A \u0639\u0645\u0644\u0629 \u0645\u0639\u062F\u0646\u064A\u0629"),
+  data: new import_discord13.SlashCommandBuilder().setName("flip").setDescription("\u0631\u0645\u064A \u0639\u0645\u0644\u0629 \u0645\u0639\u062F\u0646\u064A\u0629"),
   async execute(interaction) {
     const result = Math.random() < 0.5 ? "\u0635\u0648\u0631\u0629 \u{1F985}" : "\u0643\u062A\u0627\u0628\u0629 \u{1FA99}";
-    const embed = new import_discord12.EmbedBuilder().setColor(15965202).setTitle("\u{1FA99} \u0631\u0645\u064A \u0627\u0644\u0639\u0645\u0644\u0629").setDescription(`\u0627\u0644\u0646\u062A\u064A\u062C\u0629: **${result}**`).setTimestamp();
+    const embed = new import_discord13.EmbedBuilder().setColor(15965202).setTitle("\u{1FA99} \u0631\u0645\u064A \u0627\u0644\u0639\u0645\u0644\u0629").setDescription(`\u0627\u0644\u0646\u062A\u064A\u062C\u0629: **${result}**`).setTimestamp();
     await interaction.reply({ embeds: [embed] });
   }
 };
 
 // src/bot/commands/fun/eightball.ts
-var import_discord13 = __toESM(require_src2(), 1);
+var import_discord14 = __toESM(require_src2(), 1);
 var responses = [
   "\u0628\u0627\u0644\u062A\u0623\u0643\u064A\u062F \u2705",
   "\u0646\u0639\u0645\u060C \u0628\u0627\u0644\u062A\u0623\u0643\u064A\u062F! \u2705",
@@ -107793,13 +107854,13 @@ var responses = [
   "\u0644\u0627 \u064A\u0628\u062F\u0648 \u0630\u0644\u0643 \u274C"
 ];
 var eightball = {
-  data: new import_discord13.SlashCommandBuilder().setName("8ball").setDescription("\u0627\u0633\u0623\u0644 \u0627\u0644\u0643\u0631\u0629 \u0627\u0644\u0633\u062D\u0631\u064A\u0629").addStringOption(
+  data: new import_discord14.SlashCommandBuilder().setName("8ball").setDescription("\u0627\u0633\u0623\u0644 \u0627\u0644\u0643\u0631\u0629 \u0627\u0644\u0633\u062D\u0631\u064A\u0629").addStringOption(
     (option) => option.setName("\u0627\u0644\u0633\u0624\u0627\u0644").setDescription("\u0633\u0624\u0627\u0644\u0643 \u0647\u0646\u0627").setRequired(true)
   ),
   async execute(interaction) {
     const question = interaction.options.getString("\u0627\u0644\u0633\u0624\u0627\u0644", true);
     const response = responses[Math.floor(Math.random() * responses.length)];
-    const embed = new import_discord13.EmbedBuilder().setColor(2899536).setTitle("\u{1F3B1} \u0627\u0644\u0643\u0631\u0629 \u0627\u0644\u0633\u062D\u0631\u064A\u0629").addFields(
+    const embed = new import_discord14.EmbedBuilder().setColor(2899536).setTitle("\u{1F3B1} \u0627\u0644\u0643\u0631\u0629 \u0627\u0644\u0633\u062D\u0631\u064A\u0629").addFields(
       { name: "\u0627\u0644\u0633\u0624\u0627\u0644", value: question },
       { name: "\u0627\u0644\u0625\u062C\u0627\u0628\u0629", value: response }
     ).setTimestamp();
@@ -107808,15 +107869,15 @@ var eightball = {
 };
 
 // src/bot/commands/fun/userinfo.ts
-var import_discord14 = __toESM(require_src2(), 1);
+var import_discord15 = __toESM(require_src2(), 1);
 var userinfo = {
-  data: new import_discord14.SlashCommandBuilder().setName("userinfo").setDescription("\u0639\u0631\u0636 \u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0639\u0636\u0648").addUserOption(
+  data: new import_discord15.SlashCommandBuilder().setName("userinfo").setDescription("\u0639\u0631\u0636 \u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0639\u0636\u0648").addUserOption(
     (option) => option.setName("\u0627\u0644\u0639\u0636\u0648").setDescription("\u0627\u0644\u0639\u0636\u0648 \u0627\u0644\u0645\u0631\u0627\u062F \u0639\u0631\u0636 \u0645\u0639\u0644\u0648\u0645\u0627\u062A\u0647").setRequired(false)
   ),
   async execute(interaction) {
     await interaction.deferReply();
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0645\u0627\u0644\u0643 \u0627\u0644\u0633\u064A\u0631\u0641\u0631 \u0641\u0642\u0637." });
+    if (!isOwnerOrAdmin(interaction)) {
+      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0644\u0645\u0627\u0644\u0643 \u0623\u0648 \u0627\u0644\u0623\u062F\u0645\u0646 \u0641\u0642\u0637." });
       return;
     }
     const target = interaction.options.getUser("\u0627\u0644\u0639\u0636\u0648") ?? interaction.user;
@@ -107824,7 +107885,7 @@ var userinfo = {
     const joinedAt = member?.joinedAt ? `<t:${Math.floor(member.joinedAt.getTime() / 1e3)}:R>` : "\u063A\u064A\u0631 \u0645\u0639\u0631\u0648\u0641";
     const createdAt = `<t:${Math.floor(target.createdTimestamp / 1e3)}:R>`;
     const roles = member?.roles.cache.filter((r) => r.id !== interaction.guildId).map((r) => r.toString()).join(", ") || "\u0644\u0627 \u062A\u0648\u062C\u062F \u0623\u062F\u0648\u0627\u0631";
-    const embed = new import_discord14.EmbedBuilder().setColor(3447003).setTitle(`\u{1F464} \u0645\u0639\u0644\u0648\u0645\u0627\u062A ${target.tag}`).setThumbnail(target.displayAvatarURL({ size: 256 })).addFields(
+    const embed = new import_discord15.EmbedBuilder().setColor(3447003).setTitle(`\u{1F464} \u0645\u0639\u0644\u0648\u0645\u0627\u062A ${target.tag}`).setThumbnail(target.displayAvatarURL({ size: 256 })).addFields(
       { name: "\u0627\u0644\u0627\u0633\u0645", value: target.username, inline: true },
       { name: "\u0627\u0644\u0645\u0639\u0631\u0641", value: target.id, inline: true },
       { name: "\u0628\u0648\u062A\u061F", value: target.bot ? "\u0646\u0639\u0645 \u{1F916}" : "\u0644\u0627 \u{1F464}", inline: true },
@@ -107837,13 +107898,13 @@ var userinfo = {
 };
 
 // src/bot/commands/fun/serverinfo.ts
-var import_discord15 = __toESM(require_src2(), 1);
+var import_discord16 = __toESM(require_src2(), 1);
 var serverinfo = {
-  data: new import_discord15.SlashCommandBuilder().setName("serverinfo").setDescription("\u0639\u0631\u0636 \u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u0633\u064A\u0631\u0641\u0631"),
+  data: new import_discord16.SlashCommandBuilder().setName("serverinfo").setDescription("\u0639\u0631\u0636 \u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u0633\u064A\u0631\u0641\u0631"),
   async execute(interaction) {
     await interaction.deferReply();
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0645\u0627\u0644\u0643 \u0627\u0644\u0633\u064A\u0631\u0641\u0631 \u0641\u0642\u0637." });
+    if (!isOwnerOrAdmin(interaction)) {
+      await interaction.editReply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0644\u0645\u0627\u0644\u0643 \u0623\u0648 \u0627\u0644\u0623\u062F\u0645\u0646 \u0641\u0642\u0637." });
       return;
     }
     const guild = interaction.guild;
@@ -107857,7 +107918,7 @@ var serverinfo = {
     const onlineMembers = guild.members.cache.filter(
       (m) => m.presence?.status !== "offline" && m.presence?.status !== void 0
     ).size;
-    const embed = new import_discord15.EmbedBuilder().setColor(10181046).setTitle(`\u{1F3E0} ${guild.name}`).setThumbnail(guild.iconURL({ size: 256 }) ?? null).addFields(
+    const embed = new import_discord16.EmbedBuilder().setColor(10181046).setTitle(`\u{1F3E0} ${guild.name}`).setThumbnail(guild.iconURL({ size: 256 }) ?? null).addFields(
       { name: "\u0627\u0644\u0645\u0627\u0644\u0643", value: owner.user.tag, inline: true },
       { name: "\u0627\u0644\u0645\u0639\u0631\u0641", value: guild.id, inline: true },
       { name: "\u062A\u0627\u0631\u064A\u062E \u0627\u0644\u0625\u0646\u0634\u0627\u0621", value: createdAt, inline: true },
@@ -107872,33 +107933,27 @@ var serverinfo = {
 };
 
 // src/bot/commands/fun/avatar.ts
-var import_discord16 = __toESM(require_src2(), 1);
+var import_discord17 = __toESM(require_src2(), 1);
 var avatar = {
-  data: new import_discord16.SlashCommandBuilder().setName("avatar").setDescription("\u0639\u0631\u0636 \u0635\u0648\u0631\u0629 \u0639\u0636\u0648").addUserOption(
+  data: new import_discord17.SlashCommandBuilder().setName("avatar").setDescription("\u0639\u0631\u0636 \u0635\u0648\u0631\u0629 \u0639\u0636\u0648").addUserOption(
     (option) => option.setName("\u0627\u0644\u0639\u0636\u0648").setDescription("\u0627\u0644\u0639\u0636\u0648 \u0627\u0644\u0645\u0631\u0627\u062F \u0639\u0631\u0636 \u0635\u0648\u0631\u062A\u0647").setRequired(false)
   ),
   async execute(interaction) {
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.reply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0645\u0627\u0644\u0643 \u0627\u0644\u0633\u064A\u0631\u0641\u0631 \u0641\u0642\u0637.", ephemeral: true });
-      return;
-    }
+    if (!await requireOwnerOrAdmin(interaction)) return;
     const target = interaction.options.getUser("\u0627\u0644\u0639\u0636\u0648") ?? interaction.user;
     const avatarUrl = target.displayAvatarURL({ size: 512 });
-    const embed = new import_discord16.EmbedBuilder().setColor(3066993).setTitle(`\u{1F5BC}\uFE0F \u0635\u0648\u0631\u0629 ${target.tag}`).setImage(avatarUrl).addFields({ name: "\u0627\u0644\u0631\u0627\u0628\u0637", value: `[\u0627\u0636\u063A\u0637 \u0647\u0646\u0627](${avatarUrl})` }).setTimestamp();
+    const embed = new import_discord17.EmbedBuilder().setColor(3066993).setTitle(`\u{1F5BC}\uFE0F \u0635\u0648\u0631\u0629 ${target.tag}`).setImage(avatarUrl).addFields({ name: "\u0627\u0644\u0631\u0627\u0628\u0637", value: `[\u0627\u0636\u063A\u0637 \u0647\u0646\u0627](${avatarUrl})` }).setTimestamp();
     await interaction.reply({ embeds: [embed] });
   }
 };
 
 // src/bot/commands/fun/help.ts
-var import_discord17 = __toESM(require_src2(), 1);
+var import_discord18 = __toESM(require_src2(), 1);
 var help = {
-  data: new import_discord17.SlashCommandBuilder().setName("help").setDescription("\u0639\u0631\u0636 \u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0623\u0648\u0627\u0645\u0631"),
+  data: new import_discord18.SlashCommandBuilder().setName("help").setDescription("\u0639\u0631\u0636 \u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0623\u0648\u0627\u0645\u0631"),
   async execute(interaction) {
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.reply({ content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0645\u0627\u0644\u0643 \u0627\u0644\u0633\u064A\u0631\u0641\u0631 \u0641\u0642\u0637.", ephemeral: true });
-      return;
-    }
-    const embed = new import_discord17.EmbedBuilder().setColor(5793266).setTitle("\u{1F4CB} \u0642\u0627\u0626\u0645\u0629 \u0623\u0648\u0627\u0645\u0631 \u0628\u0648\u062A\u0647").setDescription("\u0631\u0628\u0627\u062A \u0627\u0644\u0625\u0634\u0631\u0627\u0641 \u0648\u0627\u0644\u0645\u0631\u062D \u0644\u0644\u0633\u064A\u0631\u0641\u0631").addFields(
+    if (!await requireOwnerOrAdmin(interaction)) return;
+    const embed = new import_discord18.EmbedBuilder().setColor(5793266).setTitle("\u{1F4CB} \u0642\u0627\u0626\u0645\u0629 \u0623\u0648\u0627\u0645\u0631 \u0628\u0648\u062A\u0647").setDescription("\u0631\u0628\u0627\u062A \u0627\u0644\u0625\u0634\u0631\u0627\u0641 \u0648\u0627\u0644\u0645\u0631\u062D \u0644\u0644\u0633\u064A\u0631\u0641\u0631").addFields(
       {
         name: "\u{1F6E1}\uFE0F \u0623\u0648\u0627\u0645\u0631 \u0627\u0644\u0625\u0634\u0631\u0627\u0641",
         value: [
@@ -107931,7 +107986,7 @@ var help = {
 };
 
 // src/bot/commands/fun/autoreply.ts
-var import_discord18 = __toESM(require_src2(), 1);
+var import_discord19 = __toESM(require_src2(), 1);
 
 // src/bot/autoReplyStore.ts
 var store = /* @__PURE__ */ new Map();
@@ -107973,7 +108028,7 @@ function findAutoReply(guildId, message) {
 
 // src/bot/commands/fun/autoreply.ts
 var autoreply = {
-  data: new import_discord18.SlashCommandBuilder().setName("autoreply").setDescription("\u0625\u062F\u0627\u0631\u0629 \u0627\u0644\u0631\u062F\u0648\u062F \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A\u0629").addSubcommand(
+  data: new import_discord19.SlashCommandBuilder().setName("autoreply").setDescription("\u0625\u062F\u0627\u0631\u0629 \u0627\u0644\u0631\u062F\u0648\u062F \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A\u0629").addSubcommand(
     (sub) => sub.setName("add").setDescription("\u0625\u0636\u0627\u0641\u0629 \u0631\u062F \u062A\u0644\u0642\u0627\u0626\u064A \u062C\u062F\u064A\u062F").addStringOption(
       (o) => o.setName("trigger").setDescription("\u0627\u0644\u0643\u0644\u0645\u0629 \u0623\u0648 \u0627\u0644\u062C\u0645\u0644\u0629 \u0627\u0644\u062A\u064A \u062A\u064F\u0637\u0644\u0642 \u0627\u0644\u0631\u062F").setRequired(true)
     ).addStringOption(
@@ -107987,15 +108042,9 @@ var autoreply = {
     )
   ).addSubcommand(
     (sub) => sub.setName("list").setDescription("\u0639\u0631\u0636 \u062C\u0645\u064A\u0639 \u0627\u0644\u0631\u062F\u0648\u062F \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A\u0629")
-  ).setDefaultMemberPermissions(import_discord18.PermissionFlagsBits.Administrator),
+  ).setDefaultMemberPermissions(import_discord19.PermissionFlagsBits.Administrator),
   async execute(interaction) {
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-      await interaction.reply({
-        content: "\u274C \u0647\u0630\u0627 \u0627\u0644\u0623\u0645\u0631 \u0645\u062A\u0627\u062D \u0644\u0645\u0627\u0644\u0643 \u0627\u0644\u0633\u064A\u0631\u0641\u0631 \u0641\u0642\u0637.",
-        ephemeral: true
-      });
-      return;
-    }
+    if (!await requireOwner(interaction)) return;
     const sub = interaction.options.getSubcommand();
     const guildId = interaction.guildId;
     if (sub === "add") {
@@ -108016,7 +108065,7 @@ var autoreply = {
         });
         return;
       }
-      const embed = new import_discord18.EmbedBuilder().setColor(3066993).setTitle("\u2705 \u062A\u0645 \u0625\u0636\u0627\u0641\u0629 \u0627\u0644\u0631\u062F \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A").addFields(
+      const embed = new import_discord19.EmbedBuilder().setColor(3066993).setTitle("\u2705 \u062A\u0645 \u0625\u0636\u0627\u0641\u0629 \u0627\u0644\u0631\u062F \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A").addFields(
         { name: "\u0627\u0644\u0645\u064F\u0634\u063A\u0650\u0651\u0644", value: `\`${trigger}\``, inline: true },
         { name: "\u0627\u0644\u0646\u0648\u0639", value: exact ? "\u0645\u0637\u0627\u0628\u0642\u0629 \u062A\u0627\u0645\u0629" : "\u064A\u062D\u062A\u0648\u064A \u0639\u0644\u0649 \u0627\u0644\u0643\u0644\u0645\u0629", inline: true },
         { name: "\u0627\u0644\u0631\u062F", value: response }
@@ -108034,12 +108083,12 @@ var autoreply = {
       }
       await interaction.reply({
         embeds: [
-          new import_discord18.EmbedBuilder().setColor(15158332).setTitle("\u{1F5D1}\uFE0F \u062A\u0645 \u062D\u0630\u0641 \u0627\u0644\u0631\u062F \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A").setDescription(`\u062A\u0645 \u062D\u0630\u0641 \u0627\u0644\u0631\u062F \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A \u0644\u0640 \`${trigger}\``).setTimestamp()
+          new import_discord19.EmbedBuilder().setColor(15158332).setTitle("\u{1F5D1}\uFE0F \u062A\u0645 \u062D\u0630\u0641 \u0627\u0644\u0631\u062F \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A").setDescription(`\u062A\u0645 \u062D\u0630\u0641 \u0627\u0644\u0631\u062F \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A \u0644\u0640 \`${trigger}\``).setTimestamp()
         ]
       });
     } else if (sub === "list") {
       const replies2 = getAutoReplies(guildId);
-      const embed = new import_discord18.EmbedBuilder().setColor(3447003).setTitle("\u{1F4CB} \u0627\u0644\u0631\u062F\u0648\u062F \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A\u0629").setTimestamp();
+      const embed = new import_discord19.EmbedBuilder().setColor(3447003).setTitle("\u{1F4CB} \u0627\u0644\u0631\u062F\u0648\u062F \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A\u0629").setTimestamp();
       if (replies2.length === 0) {
         embed.setDescription("\u0644\u0627 \u062A\u0648\u062C\u062F \u0631\u062F\u0648\u062F \u062A\u0644\u0642\u0627\u0626\u064A\u0629 \u062D\u062A\u0649 \u0627\u0644\u0622\u0646.\n\u0627\u0633\u062A\u062E\u062F\u0645 `/autoreply add` \u0644\u0625\u0636\u0627\u0641\u0629 \u0648\u0627\u062D\u062F.");
       } else {
@@ -108058,15 +108107,15 @@ var autoreply = {
 };
 
 // src/bot/events/ready.ts
-var import_discord19 = __toESM(require_src2(), 1);
+var import_discord20 = __toESM(require_src2(), 1);
 function registerReadyEvent(client) {
-  client.once(import_discord19.Events.ClientReady, (readyClient) => {
+  client.once(import_discord20.Events.ClientReady, (readyClient) => {
     logger.info(`\u0627\u0644\u0631\u0628\u0627\u062A \u062C\u0627\u0647\u0632! \u062A\u0645 \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644 \u0628\u0640 ${readyClient.user.tag}`);
     readyClient.user.setPresence({
       activities: [
         {
           name: "\u0628\u0648\u062A\u0647 | /help",
-          type: import_discord19.ActivityType.Watching
+          type: import_discord20.ActivityType.Watching
         }
       ],
       status: "online"
@@ -108075,9 +108124,9 @@ function registerReadyEvent(client) {
 }
 
 // src/bot/events/interactionCreate.ts
-var import_discord20 = __toESM(require_src2(), 1);
+var import_discord21 = __toESM(require_src2(), 1);
 function registerInteractionEvent(client) {
-  client.on(import_discord20.Events.InteractionCreate, async (interaction) => {
+  client.on(import_discord21.Events.InteractionCreate, async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
     const command = client.commands.get(interaction.commandName);
     if (!command) {
@@ -108103,21 +108152,38 @@ function registerInteractionEvent(client) {
 }
 
 // src/bot/events/messageCreate.ts
-var import_discord21 = __toESM(require_src2(), 1);
+var import_discord22 = __toESM(require_src2(), 1);
+var ownerName = "\u0631\u0648\u0632";
+var ownerReplies = [
+  ownerName,
+  `${ownerName} \u{1F451}`,
+  `${ownerName} \u{1F90D}`,
+  `${ownerName} \u2728`,
+  `${ownerName} \u{1F338}`
+];
 var replies = [
   "\u0639\u064A\u0648\u0646\u064A \u{1F451}",
   "\u0644\u0628\u064A\u0647 \u064A\u0627 \u0637\u0648\u064A\u0644 \u0627\u0644\u0639\u0645\u0631 \u{1F90D}",
   "\u0647\u0644\u0627 \u0648\u063A\u0644\u0627 \u064A\u0627 \u0628\u0627\u0634\u0627 \u2728",
   "\u062A\u0641\u0636\u0644 \u0623\u0645\u0631\u0646\u064A \u{1F440}",
-  "\u0627\u0633\u0645\u0639\u0643 \u0642\u0648\u0644 \u{1F3A7}",
-  "\u0623\u0628\u0634\u0631 \u062D\u0627\u0636\u0631 \u26A1"
+  "\u0627\u0633\u0645\u0639\u0643 \u0642\u0648\u0644 \u{1F3A7}"
 ];
 var animatedEmoji = "<a:pepe_dance:123456789>";
 function registerMessageEvent(client) {
-  client.on(import_discord21.Events.MessageCreate, async (message) => {
+  client.on(import_discord22.Events.MessageCreate, async (message) => {
     if (message.author.bot) return;
     if (!message.guildId) return;
     const content = message.content.toLowerCase();
+    const isAskingOwner = content.includes("\u0627\u0646\u062A \u062D\u0642 \u0645\u0646\u0648") || content.includes("\u0627\u0646\u062A \u062A\u0627\u0628\u0639 \u0645\u0646") || content.includes("\u0645\u064A\u0646 \u0635\u0627\u062D\u0628\u0643") || content.includes("\u0645\u0646 \u0635\u0627\u062D\u0628\u0643") || content.includes("\u0645\u0644\u0643 \u0645\u0646");
+    if (isAskingOwner) {
+      const reply = ownerReplies[Math.floor(Math.random() * ownerReplies.length)];
+      try {
+        await message.reply(reply);
+      } catch (err) {
+        logger.error({ err }, "\u0641\u0634\u0644 \u0625\u0631\u0633\u0627\u0644 \u0631\u062F \u0627\u0644\u0645\u0627\u0644\u0643");
+      }
+      return;
+    }
     const isMentioned = client.user ? message.mentions.has(client.user) : false;
     const hasBoti = content.includes("\u0628\u0648\u062A\u064A");
     const hasBotiBasha = content.includes("\u0628\u0648\u062A\u064A \u0628\u0627\u0634\u0627");
@@ -108168,16 +108234,16 @@ function startBot() {
     logger.warn("DISCORD_TOKEN \u063A\u064A\u0631 \u0645\u0648\u062C\u0648\u062F \u2014 \u0627\u0644\u0631\u0628\u0627\u062A \u0644\u0646 \u064A\u0639\u0645\u0644. \u0623\u0636\u0641 \u0627\u0644\u062A\u0648\u0643\u0646 \u0644\u062A\u0641\u0639\u064A\u0644 \u0627\u0644\u0631\u0628\u0627\u062A.");
     return;
   }
-  const client = new import_discord22.Client({
+  const client = new import_discord23.Client({
     intents: [
-      import_discord22.GatewayIntentBits.Guilds,
-      import_discord22.GatewayIntentBits.GuildModeration,
-      import_discord22.GatewayIntentBits.GuildMessages,
-      import_discord22.GatewayIntentBits.MessageContent
+      import_discord23.GatewayIntentBits.Guilds,
+      import_discord23.GatewayIntentBits.GuildModeration,
+      import_discord23.GatewayIntentBits.GuildMessages,
+      import_discord23.GatewayIntentBits.MessageContent
     ],
-    partials: [import_discord22.Partials.Message, import_discord22.Partials.Channel]
+    partials: [import_discord23.Partials.Message, import_discord23.Partials.Channel]
   });
-  client.commands = new import_discord22.Collection();
+  client.commands = new import_discord23.Collection();
   for (const command of ALL_COMMANDS) {
     client.commands.set(command.data.name, command);
   }
@@ -108191,7 +108257,7 @@ function startBot() {
 }
 
 // src/bot/deploy-commands.ts
-var import_discord23 = __toESM(require_src2(), 1);
+var import_discord24 = __toESM(require_src2(), 1);
 async function deployCommands() {
   const token = process.env["DISCORD_TOKEN"];
   const clientId = process.env["DISCORD_CLIENT_ID"];
@@ -108201,11 +108267,11 @@ async function deployCommands() {
     );
     return;
   }
-  const rest = new import_discord23.REST().setToken(token);
+  const rest = new import_discord24.REST().setToken(token);
   const commandsData = ALL_COMMANDS.map((cmd) => cmd.data.toJSON());
   try {
     logger.info(`\u062C\u0627\u0631\u064A \u062A\u0633\u062C\u064A\u0644 ${commandsData.length} \u0623\u0645\u0631...`);
-    await rest.put(import_discord23.Routes.applicationCommands(clientId), { body: commandsData });
+    await rest.put(import_discord24.Routes.applicationCommands(clientId), { body: commandsData });
     logger.info("\u062A\u0645 \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u0623\u0648\u0627\u0645\u0631 \u0628\u0646\u062C\u0627\u062D!");
   } catch (err) {
     logger.error({ err }, "\u0641\u0634\u0644 \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u0623\u0648\u0627\u0645\u0631");
