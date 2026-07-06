@@ -21,14 +21,19 @@ import { serverinfo } from "./commands/fun/serverinfo.js";
 import { avatar } from "./commands/fun/avatar.js";
 import { help } from "./commands/fun/help.js";
 import { autoreply } from "./commands/fun/autoreply.js";
+import { games } from "./commands/fun/games.js";
+import { points } from "./commands/fun/points.js";
+import { shop } from "./commands/fun/shop.js";
 
 import { registerReadyEvent } from "./events/ready.js";
 import { registerInteractionEvent } from "./events/interactionCreate.js";
 import { registerMessageEvent } from "./events/messageCreate.js";
+import { registerGuildCreateEvent } from "./events/guildCreate.js";
 
 const ALL_COMMANDS: Command[] = [
   kick, ban, unban, mute, unmute, clear, warn, warningsList,
   ping, joke, roll, flip, eightball, userinfo, serverinfo, avatar, help, autoreply,
+  games, points, shop,
 ];
 
 export function startBot() {
@@ -58,6 +63,7 @@ export function startBot() {
   registerReadyEvent(client);
   registerInteractionEvent(client);
   registerMessageEvent(client);
+  registerGuildCreateEvent(client);
 
   client.login(token).catch((err) => {
     logger.error({ err }, "فشل تسجيل الدخول إلى Discord");

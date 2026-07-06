@@ -1,0 +1,67 @@
+import type { Message } from "discord.js";
+import { awardGameWin, awardGameLoss } from "../store/userProfiles.js";
+
+interface GameState {
+  requiredLetter: string;
+  lastWord: string;
+  startedBy: string;
+}
+
+const activeGames = new Map<string, GameState>();
+
+const startWords = ["كتاب", "شجرة", "قمر", "بحر", "مدرسة", "سيارة", "وردة", "نجمة", "قلم", "جبل"];
+
+function normalizeArabic(word: string): string {
+  return word
+    .replace(/[إأآا]/g, "ا")
+    .replace(/ة/g, "ه")
+    .replace(/ى/g, "ي")
+    .trim();
+}
+
+export function isGameActive(channelId: string): boolean {
+  return activeGames.has(channelId);
+}
+
+export function startLastLetterGame(channelId: string, startedBy: string): string {
+  const word = startWords[Math.floor(Math.random() * startWords.length)]!;
+  const normalized = normalizeArabic(word);
+  activeGames.set(channelId, {
+    requiredLetter: normalized.slice(-1),
+    lastWord: word,
+    startedBy,
+  });
+  return word;
+}
+
+export function stopLastLetterGame(channelId: string): boolean {
+  return activeGames.delete(channelId);
+}
+
+export async function handleGameMessage(message: Message): Promise<boolean> {
+  const state = activeGames.get(message.channelId);
+  if (!state) return false;
+  if (!message.guildId) return false;
+
+  const word = message.content.trim();
+  if (!word || word.startsWith("/")) return false;
+
+  const normalized = normalizeArabic(word);
+  const firstLetter = normalized.charAt(0);
+
+  if (firstLetter === state.requiredLetter) {
+    const { points } = await awardGameWin(message.guildId, message.author.id);
+    state.requiredLetter = normalized.slice(-1);
+    state.lastWord = word;
+    await message
+      .reply(`✔️ صح! +2 نقاط (رصيدك: ${points}) — الحرف الجديد: **${state.requiredLetter}**`)
+      .catch(() => null);
+  } else {
+    const { points } = await awardGameLoss(message.guildId, message.author.id);
+    await message
+      .reply(`🐟 ارتاح ياسمكة! لازم تبدأ بحرف **${state.requiredLetter}** (رصيدك: ${points})`)
+      .catch(() => null);
+  }
+
+  return true;
+}
