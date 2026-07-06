@@ -50,11 +50,12 @@ export async function handleGameMessage(message: Message): Promise<boolean> {
   const firstLetter = normalized.charAt(0);
 
   if (firstLetter === state.requiredLetter) {
-    const { points } = await awardGameWin(message.guildId, message.author.id);
+    const { points, streak, bonusCoins } = await awardGameWin(message.guildId, message.author.id);
     state.requiredLetter = normalized.slice(-1);
     state.lastWord = word;
+    const streakLine = bonusCoins > 0 ? `\n🔥 سلسلة أيامك: **${streak}** يوم متتالي! +${bonusCoins} عملة إضافية` : "";
     await message
-      .reply(`✔️ صح! +2 نقاط (رصيدك: ${points}) — الحرف الجديد: **${state.requiredLetter}**`)
+      .reply(`✔️ صح! +2 نقاط (رصيدك: ${points}) — الحرف الجديد: **${state.requiredLetter}**${streakLine}`)
       .catch(() => null);
   } else {
     const { points } = await awardGameLoss(message.guildId, message.author.id);

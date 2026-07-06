@@ -20,7 +20,8 @@ export const points: Command = {
       .setTitle(`🏆 رصيد ${interaction.user.username}`)
       .addFields(
         { name: "النقاط", value: `${profile?.points ?? 0}`, inline: true },
-        { name: "العملات 🪙", value: `${profile?.coins ?? 0}`, inline: true }
+        { name: "العملات 🪙", value: `${profile?.coins ?? 0}`, inline: true },
+        { name: "سلسلة الأيام 🔥", value: `${profile?.streak ?? 0}`, inline: true }
       )
       .setTimestamp();
 

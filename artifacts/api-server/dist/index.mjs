@@ -131713,6 +131713,8 @@ var botUserProfilesTable = pgTable(
     name: text("name"),
     points: integer("points").notNull().default(0),
     coins: integer("coins").notNull().default(0),
+    streak: integer("streak").notNull().default(0),
+    lastStreakDate: text("last_streak_date"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow()
   },
@@ -131798,11 +131800,43 @@ async function bumpCoins(guildId, userId, delta) {
     logger.error({ err }, "\u0641\u0634\u0644 \u062A\u062D\u062F\u064A\u062B \u0627\u0644\u0639\u0645\u0644\u0627\u062A");
   }
 }
+function getRiyadhDateString(date6 = /* @__PURE__ */ new Date()) {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Riyadh" }).format(date6);
+}
+function daysBetween(a, b) {
+  const msPerDay = 24 * 60 * 60 * 1e3;
+  return Math.round(((/* @__PURE__ */ new Date(`${b}T00:00:00Z`)).getTime() - (/* @__PURE__ */ new Date(`${a}T00:00:00Z`)).getTime()) / msPerDay);
+}
+var MAX_STREAK_BONUS = 5;
+async function bumpStreak(guildId, userId) {
+  const today = getRiyadhDateString();
+  const profile = await getProfile(guildId, userId);
+  if (profile?.lastStreakDate === today) {
+    return { streak: profile.streak, bonusCoins: 0 };
+  }
+  let newStreak = 1;
+  if (profile?.lastStreakDate) {
+    const gap = daysBetween(profile.lastStreakDate, today);
+    newStreak = gap === 1 ? profile.streak + 1 : 1;
+  }
+  try {
+    await db.insert(botUserProfilesTable).values({ id: makeId(guildId, userId), guildId, userId, streak: newStreak, lastStreakDate: today }).onConflictDoUpdate({
+      target: [botUserProfilesTable.guildId, botUserProfilesTable.userId],
+      set: { streak: newStreak, lastStreakDate: today, updatedAt: /* @__PURE__ */ new Date() }
+    });
+  } catch (err) {
+    logger.error({ err }, "\u0641\u0634\u0644 \u062A\u062D\u062F\u064A\u062B \u0633\u0644\u0633\u0644\u0629 \u0627\u0644\u0623\u064A\u0627\u0645");
+  }
+  const bonusCoins = Math.min(newStreak, MAX_STREAK_BONUS);
+  await bumpCoins(guildId, userId, bonusCoins);
+  return { streak: newStreak, bonusCoins };
+}
 async function awardGameWin(guildId, userId) {
   await bumpPoints(guildId, userId, 2);
   await bumpCoins(guildId, userId, 1);
+  const { streak, bonusCoins } = await bumpStreak(guildId, userId);
   const profile = await getProfile(guildId, userId);
-  return { points: profile?.points ?? 0, coins: profile?.coins ?? 0 };
+  return { points: profile?.points ?? 0, coins: profile?.coins ?? 0, streak, bonusCoins };
 }
 async function awardGameLoss(guildId, userId) {
   await bumpPoints(guildId, userId, -2);
@@ -131830,7 +131864,8 @@ var points = {
     const profile = await getProfile(guildId, interaction.user.id);
     const embed = new import_discord21.EmbedBuilder().setColor(10181046).setTitle(`\u{1F3C6} \u0631\u0635\u064A\u062F ${interaction.user.username}`).addFields(
       { name: "\u0627\u0644\u0646\u0642\u0627\u0637", value: `${profile?.points ?? 0}`, inline: true },
-      { name: "\u0627\u0644\u0639\u0645\u0644\u0627\u062A \u{1FA99}", value: `${profile?.coins ?? 0}`, inline: true }
+      { name: "\u0627\u0644\u0639\u0645\u0644\u0627\u062A \u{1FA99}", value: `${profile?.coins ?? 0}`, inline: true },
+      { name: "\u0633\u0644\u0633\u0644\u0629 \u0627\u0644\u0623\u064A\u0627\u0645 \u{1F525}", value: `${profile?.streak ?? 0}`, inline: true }
     ).setTimestamp();
     await interaction.editReply({ embeds: [embed] });
   }
@@ -132010,10 +132045,12 @@ async function handleGameMessage(message) {
   const normalized = normalizeArabic(word);
   const firstLetter = normalized.charAt(0);
   if (firstLetter === state.requiredLetter) {
-    const { points: points2 } = await awardGameWin(message.guildId, message.author.id);
+    const { points: points2, streak, bonusCoins } = await awardGameWin(message.guildId, message.author.id);
     state.requiredLetter = normalized.slice(-1);
     state.lastWord = word;
-    await message.reply(`\u2714\uFE0F \u0635\u062D! +2 \u0646\u0642\u0627\u0637 (\u0631\u0635\u064A\u062F\u0643: ${points2}) \u2014 \u0627\u0644\u062D\u0631\u0641 \u0627\u0644\u062C\u062F\u064A\u062F: **${state.requiredLetter}**`).catch(() => null);
+    const streakLine = bonusCoins > 0 ? `
+\u{1F525} \u0633\u0644\u0633\u0644\u0629 \u0623\u064A\u0627\u0645\u0643: **${streak}** \u064A\u0648\u0645 \u0645\u062A\u062A\u0627\u0644\u064A! +${bonusCoins} \u0639\u0645\u0644\u0629 \u0625\u0636\u0627\u0641\u064A\u0629` : "";
+    await message.reply(`\u2714\uFE0F \u0635\u062D! +2 \u0646\u0642\u0627\u0637 (\u0631\u0635\u064A\u062F\u0643: ${points2}) \u2014 \u0627\u0644\u062D\u0631\u0641 \u0627\u0644\u062C\u062F\u064A\u062F: **${state.requiredLetter}**${streakLine}`).catch(() => null);
   } else {
     const { points: points2 } = await awardGameLoss(message.guildId, message.author.id);
     await message.reply(`\u{1F41F} \u0627\u0631\u062A\u0627\u062D \u064A\u0627\u0633\u0645\u0643\u0629! \u0644\u0627\u0632\u0645 \u062A\u0628\u062F\u0623 \u0628\u062D\u0631\u0641 **${state.requiredLetter}** (\u0631\u0635\u064A\u062F\u0643: ${points2})`).catch(() => null);

@@ -73,11 +73,54 @@ async function bumpCoins(guildId: string, userId: string, delta: number) {
   }
 }
 
+function getRiyadhDateString(date = new Date()): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Riyadh" }).format(date);
+}
+
+function daysBetween(a: string, b: string): number {
+  const msPerDay = 24 * 60 * 60 * 1000;
+  return Math.round((new Date(`${b}T00:00:00Z`).getTime() - new Date(`${a}T00:00:00Z`).getTime()) / msPerDay);
+}
+
+const MAX_STREAK_BONUS = 5;
+
+async function bumpStreak(guildId: string, userId: string): Promise<{ streak: number; bonusCoins: number }> {
+  const today = getRiyadhDateString();
+  const profile = await getProfile(guildId, userId);
+
+  if (profile?.lastStreakDate === today) {
+    return { streak: profile.streak, bonusCoins: 0 };
+  }
+
+  let newStreak = 1;
+  if (profile?.lastStreakDate) {
+    const gap = daysBetween(profile.lastStreakDate, today);
+    newStreak = gap === 1 ? profile.streak + 1 : 1;
+  }
+
+  try {
+    await db
+      .insert(botUserProfilesTable)
+      .values({ id: makeId(guildId, userId), guildId, userId, streak: newStreak, lastStreakDate: today })
+      .onConflictDoUpdate({
+        target: [botUserProfilesTable.guildId, botUserProfilesTable.userId],
+        set: { streak: newStreak, lastStreakDate: today, updatedAt: new Date() },
+      });
+  } catch (err) {
+    logger.error({ err }, "فشل تحديث سلسلة الأيام");
+  }
+
+  const bonusCoins = Math.min(newStreak, MAX_STREAK_BONUS);
+  await bumpCoins(guildId, userId, bonusCoins);
+  return { streak: newStreak, bonusCoins };
+}
+
 export async function awardGameWin(guildId: string, userId: string) {
   await bumpPoints(guildId, userId, 2);
   await bumpCoins(guildId, userId, 1);
+  const { streak, bonusCoins } = await bumpStreak(guildId, userId);
   const profile = await getProfile(guildId, userId);
-  return { points: profile?.points ?? 0, coins: profile?.coins ?? 0 };
+  return { points: profile?.points ?? 0, coins: profile?.coins ?? 0, streak, bonusCoins };
 }
 
 export async function awardGameLoss(guildId: string, userId: string) {

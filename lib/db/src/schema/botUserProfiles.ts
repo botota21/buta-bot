@@ -11,6 +11,8 @@ export const botUserProfilesTable = pgTable(
     name: text("name"),
     points: integer("points").notNull().default(0),
     coins: integer("coins").notNull().default(0),
+    streak: integer("streak").notNull().default(0),
+    lastStreakDate: text("last_streak_date"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },
