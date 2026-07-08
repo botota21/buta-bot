@@ -2,6 +2,17 @@ import { Events, ChatInputCommandInteraction } from "discord.js";
 import type { BotClient } from "../types.js";
 import { logger } from "../../lib/logger.js";
 import { isGameActive, startLastLetterGame, stopLastLetterGame } from "../games/lastLetter.js";
+import { isMemoryGameActive, startMemoryGame, stopMemoryGame } from "../games/memoryGame.js";
+
+function isAnyGameActive(channelId: string): boolean {
+  return isGameActive(channelId) || isMemoryGameActive(channelId);
+}
+
+function stopAnyGame(channelId: string): boolean {
+  const stoppedLast = stopLastLetterGame(channelId);
+  const stoppedMemory = stopMemoryGame(channelId);
+  return stoppedLast || stoppedMemory;
+}
 
 export function registerInteractionEvent(client: BotClient) {
   client.on(Events.InteractionCreate, async (interaction) => {
@@ -9,7 +20,7 @@ export function registerInteractionEvent(client: BotClient) {
       const value = interaction.values[0];
       try {
         if (value === "last") {
-          if (isGameActive(interaction.channelId)) {
+          if (isAnyGameActive(interaction.channelId)) {
             await interaction.reply({ content: "⚠️ في لعبة نشطة بالفعل في هذه القناة.", ephemeral: true });
             return;
           }
@@ -17,8 +28,17 @@ export function registerInteractionEvent(client: BotClient) {
           await interaction.reply({
             content: `🎮 بدأت لعبة "آخر حرف"!\nالكلمة الأولى: **${word}**\nاكتب كلمة تبدأ بآخر حرف منها في القناة.`,
           });
+        } else if (value === "memory") {
+          if (isAnyGameActive(interaction.channelId)) {
+            await interaction.reply({ content: "⚠️ في لعبة نشطة بالفعل في هذه القناة.", ephemeral: true });
+            return;
+          }
+          const sequence = startMemoryGame(interaction.channelId, interaction.user.id);
+          await interaction.reply({
+            content: `🧠 بدأت "لعبة الذاكرة"!\nاحفظ هذا التسلسل واكتبه بنفس الترتيب:\n${sequence.join(" ")}`,
+          });
         } else if (value === "stop") {
-          const stopped = stopLastLetterGame(interaction.channelId);
+          const stopped = stopAnyGame(interaction.channelId);
           await interaction.reply({
             content: stopped ? "🛑 تم إيقاف اللعبة." : "لا توجد لعبة نشطة في هذه القناة.",
           });

@@ -10,6 +10,7 @@ export const games: Command = {
       .setPlaceholder("🎮 اختر لعبة")
       .addOptions([
         { label: "كلمة آخر حرف", description: "ابدأ لعبة السلسلة في هذه القناة", value: "last" },
+        { label: "لعبة الذاكرة", description: "احفظ تسلسل الرموز وأعده بنفس الترتيب", value: "memory" },
         { label: "إيقاف اللعبة الحالية", description: "أوقف أي لعبة نشطة في هذه القناة", value: "stop" },
         { label: "قريباً", description: "المزيد من الألعاب قادمة", value: "soon" },
       ]);

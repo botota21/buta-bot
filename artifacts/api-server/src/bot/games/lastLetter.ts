@@ -11,6 +11,22 @@ const activeGames = new Map<string, GameState>();
 
 const startWords = ["كتاب", "شجرة", "قمر", "بحر", "مدرسة", "سيارة", "وردة", "نجمة", "قلم", "جبل"];
 
+const winReplies = [
+  (letter: string, points: number) => `✔️ صح! +2 نقاط (رصيدك: ${points}) — الحرف الجديد: **${letter}**`,
+  (letter: string, points: number) => `🔗 عاش! كلمة صحيحة (رصيدك: ${points}) — دورك يا خصمك بحرف **${letter}**`,
+  (letter: string, points: number) => `👏 ممتاز! (رصيدك: ${points}) — يلا كمل بحرف **${letter}**`,
+];
+
+const lossReplies = [
+  (letter: string, points: number) => `❌ خطأ! لازم تبدأ بحرف **${letter}** (رصيدك: ${points})`,
+  (letter: string, points: number) => `🚫 مو صحيحة! الكلمة الجديدة لازم تبدأ بـ **${letter}** (رصيدك: ${points})`,
+  (letter: string, points: number) => `⛔ للأسف غلط، حاول بكلمة تبدأ بحرف **${letter}** (رصيدك: ${points})`,
+];
+
+function pick<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)]!;
+}
+
 function normalizeArabic(word: string): string {
   return word
     .replace(/[إأآا]/g, "ا")
@@ -55,13 +71,11 @@ export async function handleGameMessage(message: Message): Promise<boolean> {
     state.lastWord = word;
     const streakLine = bonusCoins > 0 ? `\n🔥 سلسلة أيامك: **${streak}** يوم متتالي! +${bonusCoins} عملة إضافية` : "";
     await message
-      .reply(`✔️ صح! +2 نقاط (رصيدك: ${points}) — الحرف الجديد: **${state.requiredLetter}**${streakLine}`)
+      .reply(`${pick(winReplies)(state.requiredLetter, points)}${streakLine}`)
       .catch(() => null);
   } else {
     const { points } = await awardGameLoss(message.guildId, message.author.id);
-    await message
-      .reply(`🐟 ارتاح ياسمكة! لازم تبدأ بحرف **${state.requiredLetter}** (رصيدك: ${points})`)
-      .catch(() => null);
+    await message.reply(pick(lossReplies)(state.requiredLetter, points)).catch(() => null);
   }
 
   return true;

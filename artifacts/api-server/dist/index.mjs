@@ -113217,6 +113217,7 @@ var games = {
   async execute(interaction) {
     const menu = new import_discord20.StringSelectMenuBuilder().setCustomId("games").setPlaceholder("\u{1F3AE} \u0627\u062E\u062A\u0631 \u0644\u0639\u0628\u0629").addOptions([
       { label: "\u0643\u0644\u0645\u0629 \u0622\u062E\u0631 \u062D\u0631\u0641", description: "\u0627\u0628\u062F\u0623 \u0644\u0639\u0628\u0629 \u0627\u0644\u0633\u0644\u0633\u0644\u0629 \u0641\u064A \u0647\u0630\u0647 \u0627\u0644\u0642\u0646\u0627\u0629", value: "last" },
+      { label: "\u0644\u0639\u0628\u0629 \u0627\u0644\u0630\u0627\u0643\u0631\u0629", description: "\u0627\u062D\u0641\u0638 \u062A\u0633\u0644\u0633\u0644 \u0627\u0644\u0631\u0645\u0648\u0632 \u0648\u0623\u0639\u062F\u0647 \u0628\u0646\u0641\u0633 \u0627\u0644\u062A\u0631\u062A\u064A\u0628", value: "memory" },
       { label: "\u0625\u064A\u0642\u0627\u0641 \u0627\u0644\u0644\u0639\u0628\u0629 \u0627\u0644\u062D\u0627\u0644\u064A\u0629", description: "\u0623\u0648\u0642\u0641 \u0623\u064A \u0644\u0639\u0628\u0629 \u0646\u0634\u0637\u0629 \u0641\u064A \u0647\u0630\u0647 \u0627\u0644\u0642\u0646\u0627\u0629", value: "stop" },
       { label: "\u0642\u0631\u064A\u0628\u0627\u064B", description: "\u0627\u0644\u0645\u0632\u064A\u062F \u0645\u0646 \u0627\u0644\u0623\u0644\u0639\u0627\u0628 \u0642\u0627\u062F\u0645\u0629", value: "soon" }
     ]);
@@ -132017,6 +132018,19 @@ var import_discord25 = __toESM(require_src2(), 1);
 // src/bot/games/lastLetter.ts
 var activeGames = /* @__PURE__ */ new Map();
 var startWords = ["\u0643\u062A\u0627\u0628", "\u0634\u062C\u0631\u0629", "\u0642\u0645\u0631", "\u0628\u062D\u0631", "\u0645\u062F\u0631\u0633\u0629", "\u0633\u064A\u0627\u0631\u0629", "\u0648\u0631\u062F\u0629", "\u0646\u062C\u0645\u0629", "\u0642\u0644\u0645", "\u062C\u0628\u0644"];
+var winReplies = [
+  (letter, points2) => `\u2714\uFE0F \u0635\u062D! +2 \u0646\u0642\u0627\u0637 (\u0631\u0635\u064A\u062F\u0643: ${points2}) \u2014 \u0627\u0644\u062D\u0631\u0641 \u0627\u0644\u062C\u062F\u064A\u062F: **${letter}**`,
+  (letter, points2) => `\u{1F517} \u0639\u0627\u0634! \u0643\u0644\u0645\u0629 \u0635\u062D\u064A\u062D\u0629 (\u0631\u0635\u064A\u062F\u0643: ${points2}) \u2014 \u062F\u0648\u0631\u0643 \u064A\u0627 \u062E\u0635\u0645\u0643 \u0628\u062D\u0631\u0641 **${letter}**`,
+  (letter, points2) => `\u{1F44F} \u0645\u0645\u062A\u0627\u0632! (\u0631\u0635\u064A\u062F\u0643: ${points2}) \u2014 \u064A\u0644\u0627 \u0643\u0645\u0644 \u0628\u062D\u0631\u0641 **${letter}**`
+];
+var lossReplies = [
+  (letter, points2) => `\u274C \u062E\u0637\u0623! \u0644\u0627\u0632\u0645 \u062A\u0628\u062F\u0623 \u0628\u062D\u0631\u0641 **${letter}** (\u0631\u0635\u064A\u062F\u0643: ${points2})`,
+  (letter, points2) => `\u{1F6AB} \u0645\u0648 \u0635\u062D\u064A\u062D\u0629! \u0627\u0644\u0643\u0644\u0645\u0629 \u0627\u0644\u062C\u062F\u064A\u062F\u0629 \u0644\u0627\u0632\u0645 \u062A\u0628\u062F\u0623 \u0628\u0640 **${letter}** (\u0631\u0635\u064A\u062F\u0643: ${points2})`,
+  (letter, points2) => `\u26D4 \u0644\u0644\u0623\u0633\u0641 \u063A\u0644\u0637\u060C \u062D\u0627\u0648\u0644 \u0628\u0643\u0644\u0645\u0629 \u062A\u0628\u062F\u0623 \u0628\u062D\u0631\u0641 **${letter}** (\u0631\u0635\u064A\u062F\u0643: ${points2})`
+];
+function pick2(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
 function normalizeArabic(word) {
   return word.replace(/[إأآا]/g, "\u0627").replace(/ة/g, "\u0647").replace(/ى/g, "\u064A").trim();
 }
@@ -132050,22 +132064,83 @@ async function handleGameMessage(message) {
     state.lastWord = word;
     const streakLine = bonusCoins > 0 ? `
 \u{1F525} \u0633\u0644\u0633\u0644\u0629 \u0623\u064A\u0627\u0645\u0643: **${streak}** \u064A\u0648\u0645 \u0645\u062A\u062A\u0627\u0644\u064A! +${bonusCoins} \u0639\u0645\u0644\u0629 \u0625\u0636\u0627\u0641\u064A\u0629` : "";
-    await message.reply(`\u2714\uFE0F \u0635\u062D! +2 \u0646\u0642\u0627\u0637 (\u0631\u0635\u064A\u062F\u0643: ${points2}) \u2014 \u0627\u0644\u062D\u0631\u0641 \u0627\u0644\u062C\u062F\u064A\u062F: **${state.requiredLetter}**${streakLine}`).catch(() => null);
+    await message.reply(`${pick2(winReplies)(state.requiredLetter, points2)}${streakLine}`).catch(() => null);
   } else {
     const { points: points2 } = await awardGameLoss(message.guildId, message.author.id);
-    await message.reply(`\u{1F41F} \u0627\u0631\u062A\u0627\u062D \u064A\u0627\u0633\u0645\u0643\u0629! \u0644\u0627\u0632\u0645 \u062A\u0628\u062F\u0623 \u0628\u062D\u0631\u0641 **${state.requiredLetter}** (\u0631\u0635\u064A\u062F\u0643: ${points2})`).catch(() => null);
+    await message.reply(pick2(lossReplies)(state.requiredLetter, points2)).catch(() => null);
+  }
+  return true;
+}
+
+// src/bot/games/memoryGame.ts
+var activeGames2 = /* @__PURE__ */ new Map();
+var emojiPool = ["\u{1F436}", "\u{1F431}", "\u{1F438}", "\u{1F34E}", "\u{1F697}", "\u26BD", "\u{1F319}", "\u2B50", "\u{1F525}", "\u{1F388}", "\u{1F3B5}", "\u{1F355}"];
+var winReplies2 = [
+  (points2, next) => `\u{1F9E0} \u062D\u0641\u0638 \u0645\u0645\u062A\u0627\u0632! +2 \u0646\u0642\u0627\u0637 (\u0631\u0635\u064A\u062F\u0643: ${points2}) \u2014 \u0627\u0633\u062A\u0639\u062F \u0644\u0644\u062A\u0633\u0644\u0633\u0644 \u0627\u0644\u062A\u0627\u0644\u064A (${next} \u0631\u0645\u0648\u0632)`,
+  (points2, next) => `\u2728 \u0630\u0627\u0643\u0631\u0629 \u0642\u0648\u064A\u0629! (\u0631\u0635\u064A\u062F\u0643: ${points2}) \u2014 \u062C\u0648\u0644\u0629 \u062C\u062F\u064A\u062F\u0629 \u0628\u0640 ${next} \u0631\u0645\u0648\u0632`,
+  (points2, next) => `\u{1F3AF} \u0628\u0627\u0644\u0636\u0628\u0637 \u0635\u062D! (\u0631\u0635\u064A\u062F\u0643: ${points2}) \u2014 \u064A\u0644\u0627 ${next} \u0631\u0645\u0648\u0632 \u0647\u0627\u0644\u0645\u0631\u0629`
+];
+var lossReplies2 = [
+  (correct, points2) => `\u{1F41F} \u0627\u0631\u062A\u0627\u062D \u064A\u0627\u0633\u0645\u0643\u0629! \u0627\u0644\u062A\u0633\u0644\u0633\u0644 \u0627\u0644\u0635\u062D\u064A\u062D \u0643\u0627\u0646: ${correct} (\u0631\u0635\u064A\u062F\u0643: ${points2})`,
+  (correct, points2) => `\u{1F41F} \u062E\u0630 \u0631\u0627\u062D\u062A\u0643 \u064A\u0627\u0633\u0645\u0643\u0629\u060C \u0627\u0644\u0635\u062D \u0643\u0627\u0646: ${correct} (\u0631\u0635\u064A\u062F\u0643: ${points2})`,
+  (correct, points2) => `\u{1F41F} \u0645\u0648 \u0647\u0630\u0627 \u064A\u0627 \u0633\u0645\u0643\u0629 \u0627\u0644\u0630\u0627\u0643\u0631\u0629! \u0627\u0644\u0635\u062D\u064A\u062D: ${correct} (\u0631\u0635\u064A\u062F\u0643: ${points2})`
+];
+function pick3(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+function generateSequence(length) {
+  return Array.from({ length }, () => emojiPool[Math.floor(Math.random() * emojiPool.length)]);
+}
+function isMemoryGameActive(channelId) {
+  return activeGames2.has(channelId);
+}
+function startMemoryGame(channelId, startedBy) {
+  const sequence = generateSequence(3);
+  activeGames2.set(channelId, { sequence, startedBy });
+  return sequence;
+}
+function stopMemoryGame(channelId) {
+  return activeGames2.delete(channelId);
+}
+async function handleMemoryGameMessage(message) {
+  const state = activeGames2.get(message.channelId);
+  if (!state) return false;
+  if (!message.guildId) return false;
+  const answer = message.content.trim();
+  if (!answer || answer.startsWith("/")) return false;
+  const submitted = Array.from(answer).filter((ch) => emojiPool.includes(ch));
+  const correct = submitted.length === state.sequence.length && submitted.every((ch, i) => ch === state.sequence[i]);
+  if (correct) {
+    const { points: points2 } = await awardGameWin(message.guildId, message.author.id);
+    const nextLength = Math.min(state.sequence.length + 1, 8);
+    const nextSequence = generateSequence(nextLength);
+    state.sequence = nextSequence;
+    await message.reply(`${pick3(winReplies2)(points2, nextLength)}
+${nextSequence.join(" ")}`).catch(() => null);
+  } else {
+    const { points: points2 } = await awardGameLoss(message.guildId, message.author.id);
+    await message.reply(pick3(lossReplies2)(state.sequence.join(" "), points2)).catch(() => null);
+    activeGames2.delete(message.channelId);
   }
   return true;
 }
 
 // src/bot/events/interactionCreate.ts
+function isAnyGameActive(channelId) {
+  return isGameActive(channelId) || isMemoryGameActive(channelId);
+}
+function stopAnyGame(channelId) {
+  const stoppedLast = stopLastLetterGame(channelId);
+  const stoppedMemory = stopMemoryGame(channelId);
+  return stoppedLast || stoppedMemory;
+}
 function registerInteractionEvent(client) {
   client.on(import_discord25.Events.InteractionCreate, async (interaction) => {
     if (interaction.isStringSelectMenu() && interaction.customId === "games") {
       const value = interaction.values[0];
       try {
         if (value === "last") {
-          if (isGameActive(interaction.channelId)) {
+          if (isAnyGameActive(interaction.channelId)) {
             await interaction.reply({ content: "\u26A0\uFE0F \u0641\u064A \u0644\u0639\u0628\u0629 \u0646\u0634\u0637\u0629 \u0628\u0627\u0644\u0641\u0639\u0644 \u0641\u064A \u0647\u0630\u0647 \u0627\u0644\u0642\u0646\u0627\u0629.", ephemeral: true });
             return;
           }
@@ -132075,8 +132150,19 @@ function registerInteractionEvent(client) {
 \u0627\u0644\u0643\u0644\u0645\u0629 \u0627\u0644\u0623\u0648\u0644\u0649: **${word}**
 \u0627\u0643\u062A\u0628 \u0643\u0644\u0645\u0629 \u062A\u0628\u062F\u0623 \u0628\u0622\u062E\u0631 \u062D\u0631\u0641 \u0645\u0646\u0647\u0627 \u0641\u064A \u0627\u0644\u0642\u0646\u0627\u0629.`
           });
+        } else if (value === "memory") {
+          if (isAnyGameActive(interaction.channelId)) {
+            await interaction.reply({ content: "\u26A0\uFE0F \u0641\u064A \u0644\u0639\u0628\u0629 \u0646\u0634\u0637\u0629 \u0628\u0627\u0644\u0641\u0639\u0644 \u0641\u064A \u0647\u0630\u0647 \u0627\u0644\u0642\u0646\u0627\u0629.", ephemeral: true });
+            return;
+          }
+          const sequence = startMemoryGame(interaction.channelId, interaction.user.id);
+          await interaction.reply({
+            content: `\u{1F9E0} \u0628\u062F\u0623\u062A "\u0644\u0639\u0628\u0629 \u0627\u0644\u0630\u0627\u0643\u0631\u0629"!
+\u0627\u062D\u0641\u0638 \u0647\u0630\u0627 \u0627\u0644\u062A\u0633\u0644\u0633\u0644 \u0648\u0627\u0643\u062A\u0628\u0647 \u0628\u0646\u0641\u0633 \u0627\u0644\u062A\u0631\u062A\u064A\u0628:
+${sequence.join(" ")}`
+          });
         } else if (value === "stop") {
-          const stopped = stopLastLetterGame(interaction.channelId);
+          const stopped = stopAnyGame(interaction.channelId);
           await interaction.reply({
             content: stopped ? "\u{1F6D1} \u062A\u0645 \u0625\u064A\u0642\u0627\u0641 \u0627\u0644\u0644\u0639\u0628\u0629." : "\u0644\u0627 \u062A\u0648\u062C\u062F \u0644\u0639\u0628\u0629 \u0646\u0634\u0637\u0629 \u0641\u064A \u0647\u0630\u0647 \u0627\u0644\u0642\u0646\u0627\u0629."
           });
@@ -132115,6 +132201,14 @@ function registerInteractionEvent(client) {
 
 // src/bot/events/messageCreate.ts
 var import_discord26 = __toESM(require_src2(), 1);
+var processedMessageIds = /* @__PURE__ */ new Set();
+var DEDUPE_TTL_MS = 6e4;
+function markProcessed(messageId) {
+  if (processedMessageIds.has(messageId)) return false;
+  processedMessageIds.add(messageId);
+  setTimeout(() => processedMessageIds.delete(messageId), DEDUPE_TTL_MS).unref();
+  return true;
+}
 var ownerName = "\u0631\u0648\u0632";
 var ownerReplies = [
   ownerName,
@@ -132173,7 +132267,7 @@ var nameBlacklist = /* @__PURE__ */ new Set([
   "\u062C\u0648\u0639\u0627\u0646"
 ]);
 var animatedEmoji = "<a:pepe_dance:123456789>";
-function pick2(arr) {
+function pick4(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 function getRiyadhHour() {
@@ -132186,8 +132280,8 @@ function getRiyadhHour() {
 }
 function timeGreeting() {
   const hour = getRiyadhHour();
-  if (hour >= 5 && hour < 12) return pick2(morningReplies);
-  if (hour >= 17 || hour < 5) return pick2(eveningReplies);
+  if (hour >= 5 && hour < 12) return pick4(morningReplies);
+  if (hour >= 17 || hour < 5) return pick4(eveningReplies);
   return null;
 }
 function extractName(raw) {
@@ -132199,19 +132293,27 @@ function extractName(raw) {
   return name;
 }
 function registerMessageEvent(client) {
+  if (client._messageEventRegistered) {
+    logger.warn("\u0645\u062D\u0627\u0648\u0644\u0629 \u062A\u0633\u062C\u064A\u0644 \u0645\u0633\u062A\u0645\u0639 \u0627\u0644\u0631\u0633\u0627\u0626\u0644 \u0623\u0643\u062B\u0631 \u0645\u0646 \u0645\u0631\u0629 \u2014 \u062A\u0645 \u062A\u062C\u0627\u0647\u0644\u0647\u0627");
+    return;
+  }
+  client._messageEventRegistered = true;
   client.on(import_discord26.Events.MessageCreate, async (message) => {
     if (message.author.bot) return;
     if (!message.guildId) return;
+    if (!markProcessed(message.id)) return;
     const guildId = message.guildId;
     const userId = message.author.id;
     const rawContent = message.content;
     const content = rawContent.toLowerCase();
-    const handledByGame = await handleGameMessage(message);
-    if (handledByGame) return;
+    const handledByLastLetter = await handleGameMessage(message);
+    if (handledByLastLetter) return;
+    const handledByMemoryGame = await handleMemoryGameMessage(message);
+    if (handledByMemoryGame) return;
     const detectedName = extractName(rawContent);
     if (detectedName) {
       await setUserName(guildId, userId, detectedName);
-      await message.reply(pick2(nameSavedReplies)(detectedName)).catch((err) => {
+      await message.reply(pick4(nameSavedReplies)(detectedName)).catch((err) => {
         logger.error({ err }, "\u0641\u0634\u0644 \u062A\u0623\u0643\u064A\u062F \u062D\u0641\u0638 \u0627\u0644\u0627\u0633\u0645");
       });
       return;
@@ -132219,7 +132321,7 @@ function registerMessageEvent(client) {
     const isAskingName = content.includes("\u0646\u0633\u064A\u062A \u0627\u0633\u0645\u064A") || content.includes("\u062A\u062A\u0630\u0643\u0631 \u0627\u0633\u0645\u064A") || content.includes("\u062A\u0639\u0631\u0641 \u0627\u0633\u0645\u064A") || content.includes("\u0634\u0633\u0645\u064A");
     if (isAskingName) {
       const savedName = await getUserName(guildId, userId);
-      const reply = savedName ? pick2(rememberNameReplies)(savedName) : pick2(noNameReplies);
+      const reply = savedName ? pick4(rememberNameReplies)(savedName) : pick4(noNameReplies);
       await message.reply(reply).catch((err) => {
         logger.error({ err }, "\u0641\u0634\u0644 \u0627\u0644\u0631\u062F \u0639\u0644\u0649 \u0633\u0624\u0627\u0644 \u0627\u0644\u0627\u0633\u0645");
       });
@@ -132227,21 +132329,21 @@ function registerMessageEvent(client) {
     }
     const isAskingOwner = content.includes("\u0627\u0646\u062A \u062D\u0642 \u0645\u0646\u0648") || content.includes("\u0627\u0646\u062A \u062A\u0627\u0628\u0639 \u0645\u0646") || content.includes("\u0645\u064A\u0646 \u0635\u0627\u062D\u0628\u0643") || content.includes("\u0645\u0646 \u0635\u0627\u062D\u0628\u0643") || content.includes("\u0645\u0644\u0643 \u0645\u0646");
     if (isAskingOwner) {
-      await message.reply(pick2(ownerReplies)).catch((err) => {
+      await message.reply(pick4(ownerReplies)).catch((err) => {
         logger.error({ err }, "\u0641\u0634\u0644 \u0625\u0631\u0633\u0627\u0644 \u0631\u062F \u0627\u0644\u0645\u0627\u0644\u0643");
       });
       return;
     }
     if (content.includes("\u0635\u0628\u0627\u062D \u0627\u0644\u062E\u064A\u0631") || content.includes("\u0635\u0628\u0627\u062D \u0627\u0644\u0646\u0648\u0631")) {
-      await message.reply(pick2(morningReplies)).catch(() => null);
+      await message.reply(pick4(morningReplies)).catch(() => null);
       return;
     }
     if (content.includes("\u0645\u0633\u0627\u0621 \u0627\u0644\u062E\u064A\u0631") || content.includes("\u0645\u0633\u0627\u0621 \u0627\u0644\u0646\u0648\u0631")) {
-      await message.reply(pick2(eveningReplies)).catch(() => null);
+      await message.reply(pick4(eveningReplies)).catch(() => null);
       return;
     }
     if (content.includes("\u0627\u0644\u0633\u0644\u0627\u0645 \u0639\u0644\u064A\u0643\u0645")) {
-      await message.reply(pick2(islamicReplies)).catch(() => null);
+      await message.reply(pick4(islamicReplies)).catch(() => null);
       return;
     }
     const isMentioned = client.user ? message.mentions.has(client.user) : false;
@@ -132250,7 +132352,7 @@ function registerMessageEvent(client) {
     if (isMentioned || hasBoti || hasBushi) {
       const savedName = await getUserName(guildId, userId);
       const useName = !!savedName && Math.random() < 0.5;
-      const base = useName ? pick2(mentionRepliesWithName)(savedName) : pick2(mentionReplies);
+      const base = useName ? pick4(mentionRepliesWithName)(savedName) : pick4(mentionReplies);
       const greeting = Math.random() < 0.3 ? timeGreeting() : null;
       const finalReply = greeting ? `${greeting} ${base}` : base;
       await message.reply(`${animatedEmoji} ${finalReply}`).catch((err) => {

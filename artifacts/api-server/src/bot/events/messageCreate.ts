@@ -3,7 +3,18 @@ import type { BotClient } from "../types.js";
 import { findAutoReply } from "../autoReplyStore.js";
 import { getUserName, setUserName } from "../store/userProfiles.js";
 import { handleGameMessage } from "../games/lastLetter.js";
+import { handleMemoryGameMessage } from "../games/memoryGame.js";
 import { logger } from "../../lib/logger.js";
+
+const processedMessageIds = new Set<string>();
+const DEDUPE_TTL_MS = 60_000;
+
+function markProcessed(messageId: string): boolean {
+  if (processedMessageIds.has(messageId)) return false;
+  processedMessageIds.add(messageId);
+  setTimeout(() => processedMessageIds.delete(messageId), DEDUPE_TTL_MS).unref();
+  return true;
+}
 
 const ownerName = "روز";
 
@@ -95,9 +106,18 @@ function extractName(raw: string): string | null {
 }
 
 export function registerMessageEvent(client: BotClient) {
+  if ((client as unknown as { _messageEventRegistered?: boolean })._messageEventRegistered) {
+    logger.warn("محاولة تسجيل مستمع الرسائل أكثر من مرة — تم تجاهلها");
+    return;
+  }
+  (client as unknown as { _messageEventRegistered?: boolean })._messageEventRegistered = true;
+
   client.on(Events.MessageCreate, async (message: Message) => {
     if (message.author.bot) return;
     if (!message.guildId) return;
+
+    // 🚫 منع معالجة نفس الرسالة أكثر من مرة (مثلاً عند إعادة اتصال الجيتواي)
+    if (!markProcessed(message.id)) return;
 
     const guildId = message.guildId;
     const userId = message.author.id;
@@ -105,8 +125,11 @@ export function registerMessageEvent(client: BotClient) {
     const content = rawContent.toLowerCase();
 
     // 🎮 إذا في لعبة نشطة بالقناة، كل الرسائل تعتبر محاولات لعب
-    const handledByGame = await handleGameMessage(message);
-    if (handledByGame) return;
+    const handledByLastLetter = await handleGameMessage(message);
+    if (handledByLastLetter) return;
+
+    const handledByMemoryGame = await handleMemoryGameMessage(message);
+    if (handledByMemoryGame) return;
 
     // 📝 حفظ الاسم
     const detectedName = extractName(rawContent);
